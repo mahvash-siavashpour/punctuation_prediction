@@ -303,10 +303,29 @@ print(model)
 """## Training With HuggingFace"""
 
 EPOCHS = 3
-LEARNING_RATE = 1e-05
+LEARNING_RATE = 3.5e-06
 MAX_GRAD_NORM = 10
 
-optimizer = torch.optim.Adam(params=model.parameters(), lr=LEARNING_RATE)
+# optimizer = torch.optim.Adam(params=model.parameters(), lr=LEARNING_RATE)
+
+
+from transformers import AdamW
+
+
+
+for param in model.bert.parameters():
+    param.requires_grad = False
+
+pretrained = model.bert.parameters()
+# Get names of pretrained parameters (including `bert.` prefix)
+pretrained_names = [f'bert.{k}' for (k, v) in model.bert.named_parameters()]
+
+new_params= [v for k, v in model.named_parameters() if k not in pretrained_names]
+
+optimizer = AdamW(
+    [{'params': pretrained}, {'params': new_params, 'lr': LEARNING_RATE * 10}],
+    lr=LEARNING_RATE,
+)
 
 """### Huggingface Trainer"""
 
@@ -359,7 +378,7 @@ class CustomTrainer(Trainer):
 
 training_args = TrainingArguments(
     output_dir='./results',          # output directory
-    num_train_epochs=3,              # total number of training epochs
+    num_train_epochs=10,              # total number of training epochs
     per_device_train_batch_size=16,  # batch size per device during training
     per_device_eval_batch_size=16,   # batch size for evaluation
     warmup_steps=500,                # number of warmup steps for learning rate scheduler
@@ -382,6 +401,12 @@ trainer = CustomTrainer(
 trainer.train()
 
 
+trainer.save_model("../../saved_models/awsome_pp")
+
+
+# from transformers import DistilBertConfig, DistilBertModel
+# path = 'path_to_my_model'
+# model = DistilBertModel.from_pretrained(path)
 
 """### To get the precision/recall/f1 computed for each category now that we have finished training, we can apply the same function as before on the result of the predict method:"""
 
@@ -403,3 +428,13 @@ true_labels = [
 
 results = metric.compute(predictions=true_predictions, references=true_labels)
 print(results)
+
+
+# Inference
+from transformers import pipeline
+
+text = "ایران سرزمین زیبایی است من در ایران زندگی میکنم آیا ایران هوای خوبی دارد"
+classifier = pipeline("ner", model="../../saved_models/awsome_pp")
+
+classifier(text)
+
