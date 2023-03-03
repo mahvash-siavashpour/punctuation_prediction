@@ -199,7 +199,6 @@ print(weights)
 print(id2tag)
 
 from torch import nn
-device = torch.device("cuda")
 
 class_weights = torch.from_numpy(weights).float().to(device)
 
@@ -207,10 +206,6 @@ loss_fct = nn.CrossEntropyLoss(weight=torch.tensor(class_weights))
 
 """## Defining Costume Model"""
 
-device = 'cuda'
-import torch, gc
-gc.collect()
-torch.cuda.empty_cache()
 
 from torch.autograd import Variable 
 from torch import nn
@@ -299,11 +294,10 @@ class CustomModel(nn.Module):
             attentions=output.attentions,
         )
 
-# device = torch.device("cuda")
-# device
+
 
 model = CustomModel(num_classes=5, checkpoint= bert_model_name, loss_fct=loss_fct)
-# model.to(device)
+model.to(device)
 print(model)
 
 """## Training With HuggingFace"""
@@ -347,7 +341,6 @@ def compute_metrics(p):
 from torch import nn
 from transformers import Trainer
 
-device = torch.device("cuda")
 # class_weights = torch.from_numpy(weights).float().to(device)
 
 class CustomTrainer(Trainer):
