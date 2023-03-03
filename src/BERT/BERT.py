@@ -302,9 +302,8 @@ print(model)
 
 """## Training With HuggingFace"""
 
-EPOCHS = 3
+EPOCHS = 5
 LEARNING_RATE = 3.5e-06
-MAX_GRAD_NORM = 10
 
 # optimizer = torch.optim.Adam(params=model.parameters(), lr=LEARNING_RATE)
 
@@ -376,12 +375,13 @@ class CustomTrainer(Trainer):
         loss = loss_fct(logits.reshape(logits.shape[0]*logits.shape[1], self.model.num_labels), labels.view(-1))
         return (loss, outputs) if return_outputs else loss
 
+import math
 training_args = TrainingArguments(
     output_dir='./results',          # output directory
-    num_train_epochs=10,              # total number of training epochs
+    num_train_epochs=EPOCHS,              # total number of training epochs
     per_device_train_batch_size=16,  # batch size per device during training
     per_device_eval_batch_size=16,   # batch size for evaluation
-    warmup_steps=500,                # number of warmup steps for learning rate scheduler
+    warmup_steps=300,                # number of warmup steps for learning rate scheduler
     weight_decay=0.01,               # strength of weight decay
     logging_dir='./logs',            # directory for storing logs
     logging_steps=1000,
@@ -394,15 +394,50 @@ trainer = CustomTrainer(
     args=training_args,                  # training arguments, defined above
     train_dataset=training_set,         # training dataset
     eval_dataset=testing_set,             # evaluation dataset
-    compute_metrics = compute_metrics
+    compute_metrics = compute_metrics,
+    optimizers = (optimizer, transformers.get_scheduler('linear', optimizer, num_training_steps=math.ceil(len(training_set)/16)* EPOCHS, num_warmup_steps=300))
 )
-
 
 trainer.train()
 
 
+
+# fine tuning
+for param in model.bert.parameters():
+    param.requires_grad = True
+
+
+EPOCHS=10
+
+import math
+training_args2 = TrainingArguments(
+    output_dir='./results',          # output directory
+    num_train_epochs=EPOCHS,              # total number of training epochs
+    per_device_train_batch_size=16,  # batch size per device during training
+    per_device_eval_batch_size=16,   # batch size for evaluation
+    warmup_steps=300,                # number of warmup steps for learning rate scheduler
+    weight_decay=0.01,               # strength of weight decay
+    logging_dir='./logs',            # directory for storing logs
+    logging_steps=1000,
+    save_steps = 1000
+)
+
+trainer2 = CustomTrainer(
+    model=model,                         # the instantiated 🤗 Transformers model to be trained
+    args=training_args2,                  # training arguments, defined above
+    train_dataset=training_set,         # training dataset
+    eval_dataset=testing_set,             # evaluation dataset
+    compute_metrics = compute_metrics,
+    optimizers = (optimizer, transformers.get_scheduler('linear', optimizer, num_training_steps=math.ceil(len(training_set)/16)* EPOCHS, num_warmup_steps=300))
+)
+
+trainer2.train()
+
+
 trainer.save_model("../../saved_models/awsome_pp")
 
+trainer.save_model("../../saved_models/awsome_pp1")
+torch.save(model.state_dict(), "../../saved_models/awsome_pp2")
 
 # from transformers import DistilBertConfig, DistilBertModel
 # path = 'path_to_my_model'
@@ -430,11 +465,11 @@ results = metric.compute(predictions=true_predictions, references=true_labels)
 print(results)
 
 
-# Inference
-from transformers import pipeline
+# # Inference
+# from transformers import pipeline
 
-text = "ایران سرزمین زیبایی است من در ایران زندگی میکنم آیا ایران هوای خوبی دارد"
-classifier = pipeline("ner", model="../../saved_models/awsome_pp")
+# text = "ایران سرزمین زیبایی است من در ایران زندگی میکنم آیا ایران هوای خوبی دارد"
+# classifier = pipeline("ner", model="../../saved_models/awsome_pp")
 
-classifier(text)
+# classifier(text)
 
