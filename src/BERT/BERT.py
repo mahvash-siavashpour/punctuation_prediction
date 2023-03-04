@@ -200,9 +200,9 @@ print(id2tag)
 
 from torch import nn
 
-class_weights = torch.from_numpy(weights).float().to(device)
+# class_weights = torch.from_numpy(weights).float().to(device)
 
-loss_fct = nn.CrossEntropyLoss(weight=torch.tensor(class_weights))
+loss_fct = nn.CrossEntropyLoss()
 
 """## Defining Costume Model"""
 
@@ -297,7 +297,7 @@ class CustomModel(nn.Module):
 
 
 model = CustomModel(num_classes=5, checkpoint= bert_model_name, loss_fct=loss_fct)
-model.to(device)
+# model.to(device)
 print(model)
 
 """## Training With HuggingFace"""
