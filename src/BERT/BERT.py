@@ -227,21 +227,21 @@ class CustomModel(nn.Module):
         # self.classifier = nn.Linear(768,num_classes)
 
 
-        input_dim = 768
-        hidden_dim = 100
-        n_layers = 1
-        self.lstm = nn.LSTM(input_dim, hidden_dim, n_layers, batch_first=True)
-        self.classifier = nn.Linear(mlp_dim, num_classes)
+        # input_dim = 768
+        # hidden_dim = 100
+        # n_layers = 1
+        # self.lstm = nn.LSTM(input_dim, hidden_dim, n_layers, batch_first=True)
+        # self.classifier = nn.Linear(mlp_dim, num_classes)
         
 
 
-        # self.mlp = nn.Sequential(
-        #     nn.Linear(hidden_dim, mlp_dim),
-        #     nn.ReLU(),
-        #     nn.Linear(mlp_dim, mlp_dim),
-        #     nn.ReLU(),            
-        #     nn.Linear(mlp_dim, num_classes)
-        # )
+        self.mlp = nn.Sequential(
+            nn.Linear(hidden_dim, mlp_dim),
+            nn.ReLU(),
+            nn.Linear(mlp_dim, mlp_dim),
+            nn.ReLU(),            
+            nn.Linear(mlp_dim, num_classes)
+        )
 
 
    
@@ -264,13 +264,13 @@ class CustomModel(nn.Module):
         # logits = self.classifier(sequence_output[:,0,:].view(-1,768)) # calculate losses
         
         #LSTM
-        logits, (hidden, cell) = self.lstm(sequence_output)
-        logits = self.classifier(logits)        
+        # logits, (hidden, cell) = self.lstm(sequence_output)
+        # logits = self.classifier(logits)        
 
 
         # mlp
-        # logits = self.mlp(sequence_output)
-        # print(logits.shape)
+        logits = self.mlp(sequence_output)
+        print(logits.shape)
 
 
         # classifier
@@ -407,7 +407,7 @@ for param in model.bert.parameters():
     param.requires_grad = True
 
 
-EPOCHS=10
+EPOCHS=15
 
 import math
 training_args2 = TrainingArguments(
