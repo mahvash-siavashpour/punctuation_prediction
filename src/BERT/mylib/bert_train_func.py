@@ -9,7 +9,16 @@ from datasets import load_metric
 metric = load_metric("seqeval")
 
 u_tags =list(config.unique_tags)
-loss_fct = config.loss_fct()
+
+
+def loss_fct(weights):
+    if weights != None:
+        loss_fct = nn.CrossEntropyLoss(weights=weights)
+        return loss_fct
+    else:
+        loss_fct = nn.CrossEntropyLoss()
+        return loss_fct
+
 
 class CustomModel(nn.Module):
     def __init__(self, num_classes, checkpoint, bert_model_name, hidden_dim=100, mlp_dim=100, dropout=0.1, loss_fct=nn.CrossEntropyLoss(), model_type='mlp'):
@@ -124,8 +133,9 @@ def compute_metrics(p):
 
 
 class CustomTrainer(Trainer):
-    def __init__(self, *args, **kwargs):
+    def __init__(self,loss_fct, *args, **kwargs):
         super().__init__(*args, **kwargs)   
+        self.loss_fct = loss_fct
 
     def compute_loss(self, model, inputs, return_outputs=False):
         labels = inputs.get("labels")
@@ -134,6 +144,6 @@ class CustomTrainer(Trainer):
         logits = outputs.logits
         # compute custom loss (suppose one has 5 labels with different weights)
         # loss = loss_fct(logits.view(-1, self.model.config.num_labels), labels.view(-1))
-        loss = loss_fct(logits.reshape(logits.shape[0]*logits.shape[1], self.model.num_labels), labels.view(-1))
+        loss = self.loss_fct(logits.reshape(logits.shape[0]*logits.shape[1], self.model.num_labels), labels.view(-1))
         return (loss, outputs) if return_outputs else loss
 

@@ -17,13 +17,7 @@ unique_tags = set({'_qMark', '_exMark', 'O', '_dot', '_comma'})
 tag2id = {tag: id for id, tag in enumerate(unique_tags)}
 id2tag = {id: tag for tag, id in tag2id.items()}
 
-def loss_fct(weights):
-    if weights != None:
-        loss_fct = nn.CrossEntropyLoss(weights=weights)
-        return loss_fct
-    else:
-        loss_fct = nn.CrossEntropyLoss()
-        return loss_fct
+
 
 
 bert_model_name = 'HooshvareLab/distilbert-fa-zwnj-base'
