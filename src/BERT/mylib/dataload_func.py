@@ -130,7 +130,7 @@ def loss_weights(label_count):
         weights.append(w)
         # print(w)
 
-        weights = np.array(weights)
-        weights = weights / np.sum(weights)
+    weights = np.array(weights)
+    weights = weights / np.sum(weights)
         
     return weights
