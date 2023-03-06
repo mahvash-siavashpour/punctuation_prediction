@@ -132,7 +132,7 @@ training_args = TrainingArguments(
 
 
 trainer = bert_train_func.CustomTrainer(
-    loss_fct=loss_fct
+    loss_fct=loss_fct,
     model=model,                         # the instantiated 🤗 Transformers model to be trained
     args=training_args,                  # training arguments, defined above
     train_dataset=training_set,         # training dataset
@@ -165,7 +165,7 @@ training_args2 = TrainingArguments(
 )
 
 trainer2 = bert_train_func.CustomTrainer(
-    loss_fct=loss_fct
+    loss_fct=loss_fct,
     model=model,                         # the instantiated 🤗 Transformers model to be trained
     args=training_args2,                  # training arguments, defined above
     train_dataset=training_set,         # training dataset
