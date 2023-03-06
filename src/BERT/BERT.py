@@ -270,7 +270,6 @@ class CustomModel(nn.Module):
 
         # mlp
         logits = self.mlp(sequence_output)
-        print(logits.shape)
 
 
         # classifier
