@@ -79,7 +79,7 @@ print(weights)
 
 # class_weights = torch.from_numpy(weights).float().to(device)
 
-loss_fct = config.loss_fct()
+loss_fct = config.loss_fct(weights=None)
 
 """## Defining Costume Model"""
 
