@@ -126,7 +126,7 @@ def loss_weights(label_count):
         # w =  np.sqrt(total_labels/label_count[i])
         # w = np.sqrt(1/label_count[i])
         b = 0.9
-        w = 1/((1- b**np.log(label_count[i]))/(1-b))
+        w = 1/float(((1- b**np.log(label_count[i]))/(1-b)))
         weights.append(w)
         # print(w)
 
