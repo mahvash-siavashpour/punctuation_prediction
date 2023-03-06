@@ -1,40 +1,11 @@
-# -*- coding: utf-8 -*-
-"""9.1_punc_pred
-
-
-Original file is located at
-    https://colab.research.google.com/drive/1ptCZnCZzaBDVG_DExfnXL3b-FZAedWSa
-"""
-
-root = "/Data/"
-
 import pandas as pd
 import torch
-import csv
+from mylib import config
 import numpy as np
-from sklearn.model_selection import train_test_split
 
-punc = ['.', '،', '؟', '!']
-# raw_data_file_name = "03_wiki_normalized_tokenized_word_neighbouring.txt"
-# train_file_name = 'Preprocessed/wiki/'+'train_wiki.csv'
-# test_file_name = 'Preprocessed/wiki/'+'test_wiki.csv'
-
-
-raw_data_file_name = '07_taaghche_v2_normalized_tokenized_word_neighbouring_head200K.txt'
-train_file_name = 'Preprocessed/taaghche/'+'train_taaghche.csv'
-test_file_name = 'Preprocessed/taaghche/'+'test_taaghche.csv'
-
-
-"""# Tokenization
-
-## Costume dataset
-"""
-
-unique_tags = set({'_qMark', '_exMark', 'O', '_dot', '_comma'})
-tag2id = {tag: id for id, tag in enumerate(unique_tags)}
-id2tag = {id: tag for tag, id in tag2id.items()}
-
-print(id2tag)
+unique_tags = config.unique_tags
+tag2id = config.tag2id
+id2tag = config.id2tag
 
 def encode_tags_first(tags, encoding, label_all_tokens = False):
     
@@ -53,6 +24,8 @@ def encode_tags_first(tags, encoding, label_all_tokens = False):
         i += 1
 
     return encoded_labels
+
+
 
 class MyDataset(torch.utils.data.Dataset):
     def __init__(self,text, tags, tokenizer, max_len=512):
@@ -94,3 +67,70 @@ class MyDataset(torch.utils.data.Dataset):
         item['labels'] = torch.as_tensor(encoded_labels)
         
         return item
+    
+
+
+def read_data(file_name, nrows):
+  df = pd.read_csv(file_name,sep=',', nrows=nrows)
+  text = df.iloc[:, 0].values
+  tags = df.iloc[:, 1].values
+  i = 0 
+  input_tokens = []
+  input_labels = []
+
+  tmp_tokens = []
+  tmp_tags = []
+
+  for word, label in zip(text, tags):
+    if i % 250 == 0 and i !=0:
+      input_tokens.append(tmp_tokens)
+      input_labels.append(tmp_tags)
+      tmp_tokens = []
+      tmp_tags = []
+
+    tmp_tokens.append(word)
+    tmp_tags.append(label)
+    i += 1
+
+  return input_tokens, input_labels
+
+
+
+
+def label_counts(id2tag, training_loader):
+    label_count = {}
+    total_labels = 0
+    for u in id2tag.keys():
+        label_count[str(u)] = 0
+
+    for idx, batch in enumerate(training_loader):
+        labels = batch['labels']
+        
+        for data in labels:
+            for e in data:
+
+                if e == -100:
+                    continue
+                label_count[str(int(e))] += 1
+                total_labels += 1
+
+    return label_count
+
+
+def loss_weights(label_count):
+    weights = []
+    for i in label_count.keys():
+        # print(f"{label_frq[i]/total_labels},   {np.log(label_frq[i])/np.log(total_labels)}")
+        # print()
+        # w = 1 - total_labels/label_count[i]
+        # w =  np.sqrt(total_labels/label_count[i])
+        # w = np.sqrt(1/label_count[i])
+        b = 0.9
+        w = 1/((1- b**np.log(label_count[i]))/(1-b))
+        weights.append(w)
+        # print(w)
+
+        weights = np.array(weights)
+        weights = weights / np.sum(weights)
+        
+    return weights
