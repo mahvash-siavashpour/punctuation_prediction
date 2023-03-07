@@ -39,7 +39,7 @@ def read_data(file_name, nrows, seq_size=512):
   tmp_tokens = []
   tmp_tags = []
 
-  for word, label in zip(tqdm(text), tags):
+  for word, label in zip(text, tags):
     if i % seq_size == 0 and i !=0:
       input_tokens.append(tmp_tokens)
       input_labels.append(tmp_tags)
@@ -183,7 +183,7 @@ total_labels = 0
 for u in id2tag.keys():
   label_count[str(u)] = 0
 
-for idx, batch in enumerate(tqdm(train_loader)):
+for idx, batch in enumerate(train_loader):
   labels = batch['y']
  
   for data in labels:
