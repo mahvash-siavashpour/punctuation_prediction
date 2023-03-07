@@ -9,7 +9,7 @@ Original file is located at
 root = "../../Data/"
 import torch
 import pandas as pd
-import torch as nn
+from torch import nn
 import numpy as np
 from sklearn.model_selection import train_test_split
 import fasttext
