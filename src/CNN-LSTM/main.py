@@ -271,7 +271,7 @@ def train_one_epoch(epoch_index, tb_writer):
 
 
 
-# from torch.utils.tensorboard import SummaryWriter
+from torch.utils.tensorboard import SummaryWriter
 from datetime import datetime
 
 # Initializing in a separate cell so we can easily add more epochs to the same run
@@ -316,12 +316,10 @@ for epoch in range(EPOCHS):
 
     # Log the running loss averaged per batch
     # for both training and validation
-    # writer.add_scalars('Training vs. Validation Loss',
-    #                 { 'Training' : avg_loss, 'Validation' : avg_vloss },
-    #                 epoch_number + 1)
-    # writer.flush()
-
-    print(f"Training Loss: {avg_loss}, Validation Loss: {avg_vloss }, Epoch: {epoch_number + 1}")
+    writer.add_scalars('Training vs. Validation Loss',
+                    { 'Training' : avg_loss, 'Validation' : avg_vloss },
+                    epoch_number + 1)
+    writer.flush()
 
     # Track best performance, and save the model's state
     if avg_vloss < best_vloss:
