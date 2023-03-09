@@ -164,12 +164,12 @@ test_dataset = MyDataset(x_test, y_test)
 
 train_params = {'batch_size': 8,
                 'shuffle': False,
-                'num_workers': 2
+                'num_workers': 1
                 }
 
 test_params = {'batch_size': 8,
                 'shuffle': False,
-                'num_workers': 2
+                'num_workers': 1
                 }
 
 #Dataloaders
