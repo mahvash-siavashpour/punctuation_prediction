@@ -276,7 +276,7 @@ from datetime import datetime
 
 # Initializing in a separate cell so we can easily add more epochs to the same run
 timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-# writer = SummaryWriter('runs/fashion_trainer_{}'.format(timestamp))
+writer = SummaryWriter('runs/fashion_trainer_{}'.format(timestamp))
 epoch_number = 0
 
 EPOCHS = 5
