@@ -258,7 +258,7 @@ def train_one_epoch(epoch_index, tb_writer):
             new_y = y.detach().numpy()
             new_outputs = outputs.detach().numpy()
             new_outputs = np.argmax(new_outputs,axis=2)
-            results = metric.compute(predictions=list(new_outputs.reshape(-1)), references=list(new_y.reshape(-1)))
+            results = metric.compute(predictions=new_outputs.reshape(-1).tolist(), references=new_y.reshape(-1).tolist())
             # f1 = f1_score(y_true=new_y.reshape(-1), y_pred=new_outputs.reshape(-1), average='macro') 
             f1 = results['overall_f1']
             ave_f1 += f1
@@ -312,7 +312,7 @@ for epoch in range(EPOCHS):
         new_voutputs = voutputs.detach().numpy()
         new_voutputs = np.argmax(new_voutputs,axis=2)
         
-        results = metric.compute(predictions=list(new_voutputs.reshape(-1)), references=list(new_vlabels.reshape(-1)))
+        results = metric.compute(predictions=new_voutputs.reshape(-1).tolist(), references=new_vlabels.reshape(-1).tolist())
         f1 = results['overall_f1']
         # f1 = f1_score(y_true=new_vlabels.reshape(-1), y_pred=new_voutputs.reshape(-1), average='macro') 
 
