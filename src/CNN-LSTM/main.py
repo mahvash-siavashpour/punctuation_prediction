@@ -216,7 +216,10 @@ print(weights)
 
 
 from torch.optim import Adam
-from sklearn.metrics import f1_score   
+# from sklearn.metrics import f1_score   
+
+from datasets import load_metric
+metric = load_metric("seqeval")
 
 optimizer = Adam(model.parameters(), lr=0.001)
 loss_function = nn.CrossEntropyLoss(weight=torch.from_numpy(weights).float())
@@ -255,8 +258,9 @@ def train_one_epoch(epoch_index, tb_writer):
             new_y = y.detach().numpy()
             new_outputs = outputs.detach().numpy()
             new_outputs = np.argmax(new_outputs,axis=2)
-            
-            f1 = f1_score(y_true=new_y.reshape(-1), y_pred=new_outputs.reshape(-1), average='macro') 
+            results = metric.compute(predictions=new_outputs.reshape(-1), references=new_y.reshape(-1))
+            # f1 = f1_score(y_true=new_y.reshape(-1), y_pred=new_outputs.reshape(-1), average='macro') 
+            f1 = results['overall_f1']
             ave_f1 += f1
             # f1 = 0
             last_loss = running_loss / 1000 # loss per batch
@@ -308,7 +312,9 @@ for epoch in range(EPOCHS):
         new_voutputs = voutputs.detach().numpy()
         new_voutputs = np.argmax(new_voutputs,axis=2)
         
-        f1 = f1_score(y_true=new_vlabels.reshape(-1), y_pred=new_voutputs.reshape(-1), average='macro') 
+        results = metric.compute(predictions=new_voutputs.reshape(-1), references=new_vlabels.reshape(-1))
+        f1 = results['overall_f1']
+        # f1 = f1_score(y_true=new_vlabels.reshape(-1), y_pred=new_voutputs.reshape(-1), average='macro') 
 
     avg_vloss = running_vloss / (i + 1)
     f1 /=(i + 1)
