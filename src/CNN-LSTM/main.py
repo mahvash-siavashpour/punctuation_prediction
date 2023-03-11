@@ -311,7 +311,8 @@ for epoch in range(EPOCHS):
         new_vlabels = vlabels.detach().numpy()
         new_voutputs = voutputs.detach().numpy()
         new_voutputs = np.argmax(new_voutputs,axis=2)
-        
+        print(new_voutputs.reshape(-1).tolist())
+        print(new_vlabels.reshape(-1).tolist())
         results = metric.compute(predictions=new_voutputs.reshape(-1).tolist(), references=new_vlabels.reshape(-1).tolist())
         f1 = results['overall_f1']
         # f1 = f1_score(y_true=new_vlabels.reshape(-1), y_pred=new_voutputs.reshape(-1), average='macro') 
