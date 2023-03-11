@@ -229,6 +229,9 @@ def train_one_epoch(epoch_index, tb_writer):
     last_loss = 0.
     ave_f1 = 0
     cnt =0
+
+    accumulated_outputs = []
+    accumulated_ys= []
     
     # Here, we use enumerate(training_loader) instead of
     # iter(training_loader) so that we can track the batch
@@ -252,17 +255,18 @@ def train_one_epoch(epoch_index, tb_writer):
         # Adjust learning weights
         optimizer.step()
 
+        new_y = y.detach().numpy()
+        new_outputs = outputs.detach().numpy()
+        new_outputs = np.argmax(new_outputs,axis=2)
+
+        accumulated_outputs.append(new_outputs.reshape(-1).tolist())
+        accumulated_ys.append(new_y.reshape(-1).tolist())
+
         # Gather data and report
         running_loss += loss.item()
         if i % 1000 == 999:
-            new_y = y.detach().numpy()
-            new_outputs = outputs.detach().numpy()
-            new_outputs = np.argmax(new_outputs,axis=2)
-
-            print(new_outputs.reshape(-1).tolist())
-            print(new_y.reshape(-1).tolist())
-
-            results = metric.compute(predictions=new_outputs.reshape(-1).tolist(), references=new_y.reshape(-1).tolist())
+            
+            results = metric.compute(predictions=accumulated_outputs, references=accumulated_ys)
             # f1 = f1_score(y_true=new_y.reshape(-1), y_pred=new_outputs.reshape(-1), average='macro') 
             f1 = results['overall_f1']
             ave_f1 += f1
@@ -273,6 +277,9 @@ def train_one_epoch(epoch_index, tb_writer):
             tb_writer.add_scalar('Loss/train', last_loss, tb_x)
             running_loss = 0.
             cnt += 1
+
+            accumulated_outputs = []
+            accumulated_ys= []
 
     return last_loss, ave_f1/cnt
 
@@ -304,6 +311,10 @@ for epoch in range(EPOCHS):
 
     running_vloss = 0.0
     f1 = 0
+
+    accumulated_outputs = []
+    accumulated_ys= []
+
     for i, vdata in enumerate(test_loader):
         vinputs = vdata['x']
         vinputs = vinputs.permute(0, 2, 1)
@@ -312,17 +323,21 @@ for epoch in range(EPOCHS):
         vloss = loss_function(voutputs.view(-1, 5), vlabels.view(-1))
         running_vloss += vloss
 
+        
         new_vlabels = vlabels.detach().numpy()
         new_voutputs = voutputs.detach().numpy()
         new_voutputs = np.argmax(new_voutputs,axis=2)
+
+        accumulated_outputs.append(new_voutputs.reshape(-1).tolist())
+        accumulated_ys.append(new_vlabels.reshape(-1).tolist())
        
-        results = metric.compute(predictions=new_voutputs.reshape(-1).tolist(), references=new_vlabels.reshape(-1).tolist())
-        f1 = results['overall_f1']
-        # f1 = f1_score(y_true=new_vlabels.reshape(-1), y_pred=new_voutputs.reshape(-1), average='macro') 
+    results = metric.compute(predictions=accumulated_outputs, references=accumulated_ys)
+    f1 = results['overall_f1']
+    # f1 = f1_score(y_true=new_vlabels.reshape(-1), y_pred=new_voutputs.reshape(-1), average='macro') 
 
     avg_vloss = running_vloss / (i + 1)
-    f1 /=(i + 1)
-    print(f'LOSS train {avg_loss} valid {avg_vloss} F1 valid {f1}')
+  
+    print(f'LOSS train {avg_loss} valid {avg_vloss} valid metrics {results}')
 
     # Log the running loss averaged per batch
     # for both training and validation
