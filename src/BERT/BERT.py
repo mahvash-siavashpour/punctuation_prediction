@@ -177,8 +177,6 @@ trainer2 = bert_train_func.CustomTrainer(
 trainer2.train()
 
 
-trainer.save_model("../../saved_models/awsome_pp")
-
 trainer.save_model("../../saved_models/awsome_pp1")
 torch.save(model.state_dict(), "../../saved_models/awsome_pp2")
 

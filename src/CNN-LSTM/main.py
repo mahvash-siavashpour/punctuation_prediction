@@ -316,8 +316,8 @@ for epoch in range(EPOCHS):
     running_vloss = 0.0
     f1 = 0
 
-    accumulated_outputs = []
-    accumulated_ys= []
+    accumulated_voutputs = []
+    accumulated_vlabels= []
 
     for i, vdata in enumerate(test_loader):
         vinputs = vdata['x']
@@ -335,11 +335,11 @@ for epoch in range(EPOCHS):
         new_voutputs = new_voutputs.reshape(-1).tolist()
         notated_voutputs = [id2tag[i] for i in new_voutputs]
 
-        accumulated_outputs.append(notated_voutputs)
-        accumulated_ys.append(notated_vlabels)
+        accumulated_voutputs.append(notated_voutputs)
+        accumulated_vlabels.append(notated_vlabels)
 
        
-    results = metric.compute(predictions=accumulated_outputs, references=accumulated_ys)
+    results = metric.compute(predictions=accumulated_voutputs, references=accumulated_vlabels)
     f1 = results['overall_f1']
     # f1 = f1_score(y_true=new_vlabels.reshape(-1), y_pred=new_voutputs.reshape(-1), average='macro') 
 
