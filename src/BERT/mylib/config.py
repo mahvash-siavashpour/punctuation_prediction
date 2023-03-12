@@ -30,5 +30,5 @@ test_data_size = 20000000
 EPOCHS_classifier = 5
 LEARNING_RATE = 3.5e-06
 
-EPOCHS_finetune=15
+EPOCHS_finetune=5
 

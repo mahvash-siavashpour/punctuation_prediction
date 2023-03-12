@@ -35,8 +35,8 @@ import transformers
 from transformers import DistilBertTokenizerFast
 # from transformers import DistilBertForTokenClassification
 
-from datasets import load_metric
-metric = load_metric("seqeval")
+# from datasets import load_metric
+# metric = load_metric("seqeval")
 
 bert_model_name = config.bert_model_name
 chunksize = config.chunksize
@@ -202,7 +202,7 @@ true_labels = [
     for prediction, label in zip(predictions, labels)
 ]
 
-results = metric.compute(predictions=true_predictions, references=true_labels)
+results = bert_train_func.compute_metrics((true_predictions, true_labels))
 print(results)
 
 
