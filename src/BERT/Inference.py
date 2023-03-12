@@ -38,15 +38,15 @@ def insert_punc(output):
     result = []
 
     for (token, tag) in output[0]:
-    result.append(token)
-    if tag == '_comma':
-        result.append("،")
-    elif tag == '_dot':
-        result.append(".")
-    elif tag == '_qMark':
-        result.append("؟")
-    elif tag == '_exMark':
-        result.append("!")
+        result.append(token)
+        if tag == '_comma':
+            result.append("،")
+        elif tag == '_dot':
+            result.append(".")
+        elif tag == '_qMark':
+            result.append("؟")
+        elif tag == '_exMark':
+            result.append("!")
     return result
 
 
