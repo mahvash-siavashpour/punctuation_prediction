@@ -119,10 +119,10 @@ class CNN_LSTM(nn.Module):
         super(CNN_LSTM, self).__init__()
 
         self.cnn = nn.Sequential(
-            nn.Conv1d(in_channels=input_size, out_channels=64, kernel_size=3, stride=1, padding="same"),
+            nn.Conv1d(in_channels=input_size, out_channels=64, kernel_size=5, stride=1, padding="same"),
             nn.ReLU(),
             # nn.MaxPool1d(kernel_size=2, stride=2),
-            nn.Conv1d(in_channels=64, out_channels=64, kernel_size=3, stride=1, padding="same"),
+            nn.Conv1d(in_channels=64, out_channels=64, kernel_size=5, stride=1, padding="same", dilation=2),
             nn.ReLU(),
             # nn.MaxPool1d(kernel_size=2, stride=2)
         )
@@ -256,11 +256,15 @@ def train_one_epoch(epoch_index, tb_writer):
         optimizer.step()
 
         new_y = y.detach().numpy()
+        new_y = new_y.reshape(-1).tolist()
+        notated_y = [id2tag[i] for i in new_y]
         new_outputs = outputs.detach().numpy()
         new_outputs = np.argmax(new_outputs,axis=2)
+        new_outputs = new_outputs.reshape(-1).tolist()
+        notated_outputs = [id2tag[i] for i in new_outputs]
 
-        accumulated_outputs.append(new_outputs.reshape(-1).tolist())
-        accumulated_ys.append(new_y.reshape(-1).tolist())
+        accumulated_outputs.append(notated_outputs)
+        accumulated_ys.append(notated_y)
 
         # Gather data and report
         running_loss += loss.item()
@@ -323,13 +327,17 @@ for epoch in range(EPOCHS):
         vloss = loss_function(voutputs.view(-1, 5), vlabels.view(-1))
         running_vloss += vloss
 
-        
         new_vlabels = vlabels.detach().numpy()
+        new_vlabels = new_vlabels.reshape(-1).tolist()
+        notated_vlabels = [id2tag[i] for i in new_vlabels]
         new_voutputs = voutputs.detach().numpy()
         new_voutputs = np.argmax(new_voutputs,axis=2)
+        new_voutputs = new_voutputs.reshape(-1).tolist()
+        notated_voutputs = [id2tag[i] for i in new_voutputs]
 
-        accumulated_outputs.append(new_voutputs.reshape(-1).tolist())
-        accumulated_ys.append(new_vlabels.reshape(-1).tolist())
+        accumulated_outputs.append(notated_voutputs)
+        accumulated_ys.append(notated_vlabels)
+
        
     results = metric.compute(predictions=accumulated_outputs, references=accumulated_ys)
     f1 = results['overall_f1']
