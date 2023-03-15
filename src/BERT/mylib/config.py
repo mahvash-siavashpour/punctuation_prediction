@@ -13,18 +13,24 @@ test_file_name = 'Preprocessed/taaghche/'+'test_taaghche.csv'
 
 
 
-unique_tags = set({'_qMark', '_exMark', 'O', '_dot', '_comma'})
-tag2id = {tag: id for id, tag in enumerate(unique_tags)}
+unique_tags = set({'I-qMark', 'I-exMark', 'O', 'I-dot', 'I-comma'})
+tag2id = {'O': 0,
+          'I-dot': 1,
+          'I-comma': 2,
+          'I-qMark': 3,
+          'I-exMark':4
+          }
 id2tag = {id: tag for tag, id in tag2id.items()}
 
 
 
-
 bert_model_name = 'HooshvareLab/distilbert-fa-zwnj-base'
-chunksize = 250
-train_data_size = 100000000
-test_data_size = 20000000
+# bert_model_name = 'HooshvareLab/bert-fa-base-uncased'
+chunksize = 100
+train_data_size = 1000000000
+test_data_size = 200000000
 
+max_len = 200
 
 
 EPOCHS_classifier = 5

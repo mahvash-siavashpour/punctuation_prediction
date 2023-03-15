@@ -105,19 +105,19 @@ def seperate_data_and_labels(input_data):
       splitted_text.append(token)
       pun_mark = ""
       if next_token == '؟':
-        pun_mark = "_qMark"
+        pun_mark = "I-qMark"
         splitted_tags.append(pun_mark)
 
       elif next_token == '.':
-        pun_mark = "_dot"
+        pun_mark = "I-dot"
         splitted_tags.append(pun_mark)
     
       elif next_token == '!':
-        pun_mark = "_exMark"
+        pun_mark = "I-exMark"
         splitted_tags.append(pun_mark)
       
       elif next_token == '،':
-        pun_mark = "_comma"
+        pun_mark = "I-comma"
         splitted_tags.append(pun_mark)
       index += 1
     else:

@@ -59,7 +59,7 @@ def read_data(file_name, nrows, seq_size=512):
 
 words, tags = read_data(train_file_name, 5000000, seq_size=10)
 
-unique_tags = set({'_qMark', '_exMark', 'O', '_dot', '_comma'})
+unique_tags = set({'I-qMark', 'I-exMark', 'O', 'I-dot', 'I-comma'})
 tag2id = {tag: id for id, tag in enumerate(unique_tags)}
 id2tag = {id: tag for tag, id in tag2id.items()}
 
@@ -363,6 +363,9 @@ for epoch in range(EPOCHS):
     epoch_number += 1
 
 
+# save model
+
+torch.save(model.state_dict(), "../../saved_models/CNNLSTM/pp_cnnlstm")
 
 
 def get_punc(text, splitted=False):

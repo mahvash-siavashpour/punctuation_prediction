@@ -49,8 +49,8 @@ train_tokens, train_tags = dataload_func.read_data(root+config.train_file_name, 
 test_tokens, test_tags = dataload_func.read_data(root+config.test_file_name, config.test_data_size)
 
 # Commented out IPython magic to ensure Python compatibility.
-training_set = dataload_func.MyDataset(text=train_tokens, tags=train_tags, tokenizer=tokenizer)
-testing_set = dataload_func.MyDataset(text=test_tokens, tags=test_tags, tokenizer=tokenizer)
+training_set = dataload_func.MyDataset(text=train_tokens, tags=train_tags, tokenizer=tokenizer, max_len=config.max_len)
+testing_set = dataload_func.MyDataset(text=test_tokens, tags=test_tags, tokenizer=tokenizer, max_len=config.max_len)
 # %time
 
 print(len(training_set[0]['labels']))
@@ -177,8 +177,8 @@ trainer2 = bert_train_func.CustomTrainer(
 trainer2.train()
 
 
-trainer.save_model("../../saved_models/awsome_pp1")
-torch.save(model.state_dict(), "../../saved_models/awsome_pp2")
+# trainer.save_model("../../saved_models/awsome_pp1")
+torch.save(model.state_dict(), "../../saved_models/BERT/pp_bert")
 
 # from transformers import DistilBertConfig, DistilBertModel
 # path = 'path_to_my_model'

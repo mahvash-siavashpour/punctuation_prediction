@@ -21,7 +21,7 @@ loss_fct = bert_train_func.loss_fct(weights=None)
 model = bert_train_func.CustomModel(num_classes=5, checkpoint= bert_model_name, loss_fct=loss_fct, bert_model_name=bert_model_name)
 
 
-model.load_state_dict(torch.load('../../saved_models/awsome_pp2'), strict=False)
+model.load_state_dict(torch.load('../../saved_models/BERT/pp_bert'), strict=False)
 model.eval()
 
 print(model)
@@ -54,10 +54,9 @@ def insert_punc(output):
 def bert_get_punc(text, tokenizer, id2tag, is_splitted=False, max_length=512):
   if not is_splitted:
     text = text.split()
-  
 
 
-  chunk_text = list(divide_chunks(text, max_length))
+  chunk_text = list(divide_chunks(text, int(max_length/2)))
   final_results = []
   for ct in chunk_text:
     encoding = tokenizer(ct,
@@ -66,22 +65,42 @@ def bert_get_punc(text, tokenizer, id2tag, is_splitted=False, max_length=512):
                         truncation=True,
                         padding='max_length', 
                         max_length=max_length,
-                        return_tensors="pt")["input_ids"]
-    out = model(encoding)
+                        return_tensors="pt")
+    
+    input_encoding = encoding["input_ids"]
+
+    out = model(input_encoding)
     out=out['logits']
 
-    outputs = out.detach().numpy()
+    outputs = out.detach().cpu().numpy()
     new_outputs = np.argmax(outputs,axis=2)
+
+
+    encoded_labels = np.ones(len(encoding["attention_mask"][0]), dtype=int) * -100
+
+    # set only labels whose first offset position is 0 and the second is not 0
+    i = 0
+    for idx, mapping in enumerate(encoding["offset_mapping"][0]):
+      if mapping[0] == 0 and mapping[1] != 0:
+        # overwrite label
+        encoded_labels[idx] = 0
+        i += 1
+
+    true_predictions1 = []
+    for (p, l) in zip(new_outputs[0], encoded_labels):
+      if l != -100:
+        true_predictions1.append(id2tag[p])
     
     result = [] 
-    for o, t in zip(new_outputs[0], ct):
-      result.append((t, id2tag[o]))
+    for o, t in zip(true_predictions1, ct):
+      result.append((t, o))
 
     final_results.append(result)
 
   output_text = insert_punc(final_results)
                          
   return final_results, output_text
+
 
 
 
@@ -97,7 +116,7 @@ out, output_text = bert_get_punc(text=text1, tokenizer=tokenizer, id2tag=id2tag)
 
 print(out)
 new_output_text = " ".join(output_text)
-print(new_output_text)
+print(" ".join(new_output_text))
 
 
 

@@ -11,8 +11,8 @@ from sklearn import metrics
 
 
 
-# u_tags =list(config.unique_tags)
-u_tags = config.id2tag
+u_tags =list(config.unique_tags)
+id2tags = config.id2tag
 
 
 def loss_fct(weights):
@@ -119,11 +119,11 @@ def compute_metrics(p):
 
     # Remove ignored index (special tokens)
     true_predictions = [
-        [u_tags[p] for (p, l) in zip(prediction, label) if l != -100]
+        [id2tags[p] for (p, l) in zip(prediction, label) if l != -100]
         for prediction, label in zip(predictions, labels)
     ]
     true_labels = [
-        [u_tags[l] for (p, l) in zip(prediction, label) if l != -100]
+        [id2tags[l] for (p, l) in zip(prediction, label) if l != -100]
         for prediction, label in zip(predictions, labels)
     ]
 
@@ -134,18 +134,17 @@ def compute_metrics(p):
     #     "f1": results["overall_f1"],
     #     "accuracy": results["overall_accuracy"],
     # }
-    metrics
 
-    precision = metrics.precision_score(true_labels, true_predictions)
-    recall = metrics.recall_score(true_labels, true_predictions)
-    f1 = metrics.f1_score(true_labels, true_predictions)
-    accuracy = metrics.accuracy_score(true_labels, true_predictions)
+    precision = metrics.precision_score(true_labels, true_predictions, average='macro')
+    recall = metrics.recall_score(true_labels, true_predictions,  average='macro')
+    f1 = metrics.f1_score(true_labels, true_predictions, average='macro')
+    accuracy = metrics.accuracy_score(true_labels, true_predictions, average='macro')
 
     return {
         "precision": precision,
         "recall": recall,
         "f1": f1,
-        "accuracy": accuracy,
+        "accuracy": accuracy
         }
 
 
