@@ -17,14 +17,14 @@ from sklearn.model_selection import train_test_split
 import language_lists
 
 punc = ['.', '،', '؟', '!']
-# raw_data_file_name = "03_wiki_normalized_tokenized_word_neighbouring.txt"
-# train_file_name = 'Preprocessed/wiki/'+'train_wiki.csv'
-# test_file_name = 'Preprocessed/wiki/'+'test_wiki.csv'
+raw_data_file_name = "03_wiki_normalized_tokenized_word_neighbouring.txt"
+train_file_name = 'Preprocessed/wiki/'+'train_wiki.csv'
+test_file_name = 'Preprocessed/wiki/'+'test_wiki.csv'
 
 
-raw_data_file_name = '07_taaghche_v2_normalized_tokenized_word_neighbouring_head200K.txt'
-train_file_name = 'Preprocessed/taaghche/'+'train_taaghche.csv'
-test_file_name = 'Preprocessed/taaghche/'+'test_taaghche.csv'
+# raw_data_file_name = '07_taaghche_v2_normalized_tokenized_word_neighbouring_head200K.txt'
+# train_file_name = 'Preprocessed/taaghche/'+'train_taaghche.csv'
+# test_file_name = 'Preprocessed/taaghche/'+'test_taaghche.csv'
 
 """# Pre Processing
 
