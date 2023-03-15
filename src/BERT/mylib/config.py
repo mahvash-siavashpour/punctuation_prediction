@@ -27,7 +27,7 @@ id2tag = {id: tag for tag, id in tag2id.items()}
 bert_model_name = 'HooshvareLab/distilbert-fa-zwnj-base'
 # bert_model_name = 'HooshvareLab/bert-fa-base-uncased'
 chunksize = 100
-train_data_size = 100000000
+train_data_size = 50000000
 test_data_size = 20000000
 
 max_len = 200
@@ -38,3 +38,33 @@ LEARNING_RATE = 3.5e-06
 
 EPOCHS_finetune=5
 
+
+
+
+# def SetModelAndPaths(model_name, models):
+#     global model_config
+#     global plots_path
+#     global dataset_path
+#     global stan_file_path
+#     global stan_output_dir
+#     model_config = models[model_name]
+#     plots_path = plots_root + model_config['plots_folder_name'] + '/'
+#     dataset_path = datasets_root + model_config['dataset_name']
+#     stan_file_path = stan_files_root + model_config['stan_file']
+#     stan_output_dir = saved_models_root + model_config['model_name'] + '/'
+#     os.path
+    
+#     if not os.path.exists(plots_path):
+#         os.makedirs(plots_path)
+#         print("Directory " , plots_path ,  " Created ")
+#     else:    
+#         print("Directory " , plots_path ,  " already exists")
+        
+#     if not os.path.exists(stan_output_dir):
+#         os.makedirs(stan_output_dir)
+#         print("Directory " , stan_output_dir ,  " Created ")
+#     else:    
+#         print("Directory " , stan_output_dir ,  " already exists")
+
+
+#     return 

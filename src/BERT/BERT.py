@@ -6,6 +6,7 @@ Original file is located at
     https://colab.research.google.com/drive/1ptCZnCZzaBDVG_DExfnXL3b-FZAedWSa
 """
 
+
 root = "../../Data/"
 
 import torch
@@ -14,6 +15,20 @@ import numpy as np
 from mylib import bert_train_func
 from mylib import dataload_func
 from mylib import config
+
+
+
+#### read models configuration json file
+# with open("bert_models.json") as f:
+#     models = json.load(f)
+#     models_name = list(models.keys())
+
+
+
+
+# SetModelAndPaths(args.model_name)
+
+
 
 # load Data
 
