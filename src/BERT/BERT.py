@@ -206,11 +206,4 @@ results = bert_train_func.compute_metrics((true_predictions, true_labels))
 print(results)
 
 
-# # Inference
-# from transformers import pipeline
-
-# text = "ایران سرزمین زیبایی است من در ایران زندگی میکنم آیا ایران هوای خوبی دارد"
-# classifier = pipeline("ner", model="../../saved_models/awsome_pp")
-
-# classifier(text)
 

@@ -115,10 +115,16 @@ text1 = "بعضی از ما یادمان می‌آید که در دوران نو
 out, output_text = bert_get_punc(text=text1, tokenizer=tokenizer, id2tag=id2tag)
 
 print(out)
+
+
+
+text2 = "ایران سرزمین زیبایی است من در ایران زندگی میکنم آیا ایران هوای خوبی دارد"
+
+out, output_text = bert_get_punc(text=text2, tokenizer=tokenizer, id2tag=id2tag)
+
+print(out)
 new_output_text = " ".join(output_text)
 print(" ".join(new_output_text))
-
-
 
 
 

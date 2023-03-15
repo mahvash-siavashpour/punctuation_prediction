@@ -4,10 +4,10 @@ from transformers.modeling_outputs import TokenClassifierOutput
 from transformers import DistilBertModel
 from mylib import config
 import numpy as np
-from sklearn import metrics
+# from sklearn import metrics
 
-# from datasets import load_metric
-# metric = load_metric("seqeval")
+from datasets import load_metric
+metric = load_metric("seqeval")
 
 
 
@@ -127,25 +127,25 @@ def compute_metrics(p):
         for prediction, label in zip(predictions, labels)
     ]
 
-    # results = metric.compute(predictions=true_predictions, references=true_labels)
-    # return {
-    #     "precision": results["overall_precision"],
-    #     "recall": results["overall_recall"],
-    #     "f1": results["overall_f1"],
-    #     "accuracy": results["overall_accuracy"],
-    # }
-
-    precision = metrics.precision_score(true_labels, true_predictions, average='macro')
-    recall = metrics.recall_score(true_labels, true_predictions,  average='macro')
-    f1 = metrics.f1_score(true_labels, true_predictions, average='macro')
-    accuracy = metrics.accuracy_score(true_labels, true_predictions, average='macro')
-
+    results = metric.compute(predictions=true_predictions, references=true_labels)
     return {
-        "precision": precision,
-        "recall": recall,
-        "f1": f1,
-        "accuracy": accuracy
-        }
+        "precision": results["overall_precision"],
+        "recall": results["overall_recall"],
+        "f1": results["overall_f1"],
+        "accuracy": results["overall_accuracy"],
+    }
+
+    # precision = metrics.precision_score(true_labels, true_predictions, average='macro')
+    # recall = metrics.recall_score(true_labels, true_predictions,  average='macro')
+    # f1 = metrics.f1_score(true_labels, true_predictions, average='macro')
+    # accuracy = metrics.accuracy_score(true_labels, true_predictions, average='macro')
+
+    # return {
+    #     "precision": precision,
+    #     "recall": recall,
+    #     "f1": f1,
+    #     "accuracy": accuracy
+    #     }
 
 
 class CustomTrainer(Trainer):

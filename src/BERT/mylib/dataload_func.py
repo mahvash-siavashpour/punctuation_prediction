@@ -82,7 +82,7 @@ def read_data(file_name, nrows):
   tmp_tags = []
 
   for word, label in zip(text, tags):
-    if i % 250 == 0 and i !=0:
+    if i % config.chunksize == 0 and i !=0:
       input_tokens.append(tmp_tokens)
       input_labels.append(tmp_tags)
       tmp_tokens = []
