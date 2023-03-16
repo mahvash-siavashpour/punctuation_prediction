@@ -140,6 +140,10 @@ from transformers import TrainingArguments
 # class_weights = torch.from_numpy(weights).float().to(device)
 
 import math
+compute_metrics = bert_train_func.compute_metrics_with_extra(id2tag)
+
+
+
 
 if configurations["pre_tune"] == "yes":
     for param in model.bert.parameters():
@@ -164,7 +168,7 @@ if configurations["pre_tune"] == "yes":
         args=training_args1,                  # training arguments, defined above
         train_dataset=training_set,         # training dataset
         eval_dataset=testing_set,             # evaluation dataset
-        compute_metrics = bert_train_func.compute_metrics(id2tag=id2tag),
+        compute_metrics = compute_metrics,
         optimizers = (optimizer, transformers.get_scheduler('linear', optimizer, num_training_steps=math.ceil(len(training_set)/16)* configurations["EPOCHS_classifier"], num_warmup_steps=300))
     )
 
@@ -196,7 +200,7 @@ if configurations["fine_tune"] == "yes":
         args=training_args2,                  # training arguments, defined above
         train_dataset=training_set,         # training dataset
         eval_dataset=testing_set,             # evaluation dataset
-        compute_metrics = bert_train_func.compute_metrics(id2tag=id2tag),
+        compute_metrics = compute_metrics,
         optimizers = (optimizer, transformers.get_scheduler('linear', optimizer, num_training_steps=math.ceil(len(training_set)/16)* configurations["EPOCHS_finetune"], num_warmup_steps=300))
     )
 

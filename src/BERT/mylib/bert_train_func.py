@@ -109,39 +109,34 @@ class CustomModel(nn.Module):
         )
 
 
-def compute_metrics(p, id2tag):
-    predictions, labels = p
-    predictions = np.argmax(predictions, axis=2)
 
-    # Remove ignored index (special tokens)
-    true_predictions = [
-        [id2tag[p] for (p, l) in zip(prediction, label) if l != -100]
-        for prediction, label in zip(predictions, labels)
-    ]
-    true_labels = [
-        [id2tag[l] for (p, l) in zip(prediction, label) if l != -100]
-        for prediction, label in zip(predictions, labels)
-    ]
+def compute_metrics_with_extra(id2tag):
+    def compute_metrics(p):
+        predictions, labels = p
+        predictions = np.argmax(predictions, axis=2)
 
-    results = metric.compute(predictions=true_predictions, references=true_labels)
-    return {
-        "precision": results["overall_precision"],
-        "recall": results["overall_recall"],
-        "f1": results["overall_f1"],
-        "accuracy": results["overall_accuracy"],
-    }
+        # Remove ignored index (special tokens)
+        true_predictions = [
+            [id2tag[p] for (p, l) in zip(prediction, label) if l != -100]
+            for prediction, label in zip(predictions, labels)
+        ]
+        true_labels = [
+            [id2tag[l] for (p, l) in zip(prediction, label) if l != -100]
+            for prediction, label in zip(predictions, labels)
+        ]
 
-    # precision = metrics.precision_score(true_labels, true_predictions, average='macro')
-    # recall = metrics.recall_score(true_labels, true_predictions,  average='macro')
-    # f1 = metrics.f1_score(true_labels, true_predictions, average='macro')
-    # accuracy = metrics.accuracy_score(true_labels, true_predictions, average='macro')
+        results = metric.compute(predictions=true_predictions, references=true_labels)
+        return {
+            "precision": results["overall_precision"],
+            "recall": results["overall_recall"],
+            "f1": results["overall_f1"],
+            "accuracy": results["overall_accuracy"],
+        }
 
-    # return {
-    #     "precision": precision,
-    #     "recall": recall,
-    #     "f1": f1,
-    #     "accuracy": accuracy
-    #     }
+    return compute_metrics
+
+
+
 
 
 class CustomTrainer(Trainer):
