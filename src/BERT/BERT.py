@@ -275,4 +275,4 @@ print(f"**Training Set Results** \n {results_t}")
 
 
 #save the model
-torch.save(model.state_dict(), "../../saved_models/BERT/pp_bert")
+torch.save(model.state_dict(), configurations["save_model_path"])
