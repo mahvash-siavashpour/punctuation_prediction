@@ -39,13 +39,13 @@ def insert_punc(output):
 
     for (token, tag) in output[0]:
         result.append(token)
-        if tag == '_comma':
+        if tag == 'I-comma':
             result.append("،")
-        elif tag == '_dot':
+        elif tag == 'I-dot':
             result.append(".")
-        elif tag == '_qMark':
+        elif tag == 'I-qMark':
             result.append("؟")
-        elif tag == '_exMark':
+        elif tag == 'I-exMark':
             result.append("!")
     return result
 
@@ -98,8 +98,9 @@ def bert_get_punc(text, tokenizer, id2tag, is_splitted=False, max_length=512):
     final_results.append(result)
 
   output_text = insert_punc(final_results)
-                         
-  return final_results, output_text
+  new_output_text = " ".join(output_text)
+                   
+  return final_results, new_output_text
 
 
 
@@ -123,8 +124,7 @@ text2 = "ایران سرزمین زیبایی است من در ایران زند
 out, output_text = bert_get_punc(text=text2, tokenizer=tokenizer, id2tag=id2tag)
 
 print(out)
-new_output_text = " ".join(output_text)
-print(" ".join(new_output_text))
+print(output_text)
 
 
 

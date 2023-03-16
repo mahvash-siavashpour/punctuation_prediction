@@ -193,7 +193,6 @@ trainer2.train()
 
 
 # trainer.save_model("../../saved_models/awsome_pp1")
-torch.save(model.state_dict(), "../../saved_models/BERT/pp_bert")
 
 # from transformers import DistilBertConfig, DistilBertModel
 # path = 'path_to_my_model'
@@ -201,6 +200,8 @@ torch.save(model.state_dict(), "../../saved_models/BERT/pp_bert")
 
 """### To get the precision/recall/f1 computed for each category now that we have finished training, we can apply the same function as before on the result of the predict method:"""
 
+
+#prediction on test set
 predictions, labels, _ = trainer.predict(testing_set)
 predictions = np.argmax(predictions, axis=2)
 
@@ -222,3 +223,33 @@ print(results)
 
 
 
+
+
+
+#prediction on train set
+predictions_t, labels_t, _ = trainer.predict(training_set)
+predictions_t = np.argmax(predictions_t, axis=2)
+
+all_tags = list(unique_tags)
+print(all_tags)
+
+# Remove ignored index (special tokens)
+true_predictions_t = [
+    [all_tags[p] for (p, l) in zip(prediction, label) if l != -100]
+    for prediction, label in zip(predictions_t, labels_t)
+]
+true_labels_t = [
+    [all_tags[l] for (p, l) in zip(prediction, label) if l != -100]
+    for prediction, label in zip(predictions_t, labels_t)
+]
+
+results_t = bert_train_func.compute_metrics((true_predictions_t, true_labels_t))
+print(results_t)
+
+
+
+
+
+
+#save the model
+torch.save(model.state_dict(), "../../saved_models/BERT/pp_bert")
