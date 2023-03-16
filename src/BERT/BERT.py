@@ -213,6 +213,13 @@ if configurations["fine_tune"] == "yes":
 # path = 'path_to_my_model'
 # model = DistilBertModel.from_pretrained(path)
 
+
+
+#save the model
+torch.save(model.state_dict(), configurations["save_model_path"])
+
+
+
 """### To get the precision/recall/f1 computed for each category now that we have finished training, we can apply the same function as before on the result of the predict method:"""
 
 
@@ -274,5 +281,3 @@ print(f"**Training Set Results** \n {results_t}")
 
 
 
-#save the model
-torch.save(model.state_dict(), configurations["save_model_path"])

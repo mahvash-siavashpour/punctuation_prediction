@@ -1,10 +1,7 @@
-import pandas as pd
-import copy
-from tqdm import tqdm
 import torch
-import os
-import re
-import csv
+import argparse
+import json
+import sys
 import numpy as np
 # import language_lists
 
@@ -12,16 +9,37 @@ import numpy as np
 from mylib import bert_train_func
 from mylib import config
 
+parser = argparse.ArgumentParser(description='Makes Predition for Punctuation Marks')
+parser.add_argument('model_name',
+                    help='Model Name')
+args = parser.parse_args()
 
-bert_model_name = config.bert_model_name
-chunksize = config.chunksize
+
+### read models configuration json file
+with open("bert_models.json") as f:
+    models = json.load(f)
+    models_name = list(models.keys())
+
+
+configurations = config.SetModelConfig(args.model_name, models)
+
+sys.stdout = open(configurations["log_file_path_inference"], 'w', encoding="utf-8")
+
+
+unique_tags = configurations["unique_tags"]
+tag2id = configurations["tag2id"]
+id2tag = configurations["id2tag"]
+
+
+bert_model_name = configurations["bert_model_name"]
+chunksize = configurations["chunksize"]
 loss_fct = bert_train_func.loss_fct(weights=None)
 
 
 model = bert_train_func.CustomModel(num_classes=5, checkpoint= bert_model_name, loss_fct=loss_fct, bert_model_name=bert_model_name)
 
 
-model.load_state_dict(torch.load('../../saved_models/BERT/pp_bert'), strict=False)
+model.load_state_dict(torch.load(configurations["save_model_path"]))
 model.eval()
 
 print(model)
@@ -47,11 +65,13 @@ def insert_punc(output):
             result.append("؟")
         elif tag == 'I-exMark':
             result.append("!")
+        elif tag == "I-par":
+           result.append("\n")
     return result
 
 
 
-def bert_get_punc(text, tokenizer, id2tag, is_splitted=False, max_length=512):
+def bert_get_punc(text, tokenizer, id2tag, is_splitted=False, max_length=configurations["bert_seq_max_len"]):
   if not is_splitted:
     text = text.split()
 
@@ -109,7 +129,6 @@ from transformers import DistilBertTokenizerFast
 tokenizer = DistilBertTokenizerFast.from_pretrained(bert_model_name)
 
 
-id2tag = config.id2tag
 
 
 text1 = "بعضی از ما یادمان می‌آید که در دوران نوجوانی خود در انتخاب هر چیزی مشکل داشتیم گاه حتی نمی‌دانستیم چه چیزی را دوست داریم و چه چیزی را دوست نداریم این مسئله اکنون در کودکان‌مان قابل‌مشاهده است کودکان ما نیز در شرایط مشابه یعنی انتخاب رنگ لباس نوع غذا و غیره همان مشکلاتی را دارند که ما زمانی داشتیم"
@@ -117,7 +136,7 @@ out, output_text = bert_get_punc(text=text1, tokenizer=tokenizer, id2tag=id2tag)
 
 print(out)
 
-
+print("--------------------------------------------------")
 
 text2 = "ایران سرزمین زیبایی است من در ایران زندگی میکنم آیا ایران هوای خوبی دارد"
 
