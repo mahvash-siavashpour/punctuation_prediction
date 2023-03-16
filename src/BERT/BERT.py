@@ -237,49 +237,21 @@ else:
 predictions, labels, _ = trainer.predict(testing_set)
 predictions = np.argmax(predictions, axis=2)
 
-all_tags = list(unique_tags)
-print(all_tags)
+
 
 # Remove ignored index (special tokens)
 true_predictions = [
-    [all_tags[p] for (p, l) in zip(prediction, label) if l != -100]
+    [id2tag[p] for (p, l) in zip(prediction, label) if l != -100]
     for prediction, label in zip(predictions, labels)
 ]
 true_labels = [
-    [all_tags[l] for (p, l) in zip(prediction, label) if l != -100]
+    [id2tag[l] for (p, l) in zip(prediction, label) if l != -100]
     for prediction, label in zip(predictions, labels)
 ]
 
 print()
 results = metric.compute(predictions=true_predictions, references=true_labels)
 print(f"**Testing Set Results** \n {results}")
-
-
-
-
-
-# #prediction on train set
-# predictions_t, labels_t, _ = trainer.predict(training_set)
-# predictions_t = np.argmax(predictions_t, axis=2)
-
-# all_tags = list(unique_tags)
-# print(all_tags)
-
-# # Remove ignored index (special tokens)
-# true_predictions_t = [
-#     [all_tags[p] for (p, l) in zip(prediction, label) if l != -100]
-#     for prediction, label in zip(predictions_t, labels_t)
-# ]
-# true_labels_t = [
-#     [all_tags[l] for (p, l) in zip(prediction, label) if l != -100]
-#     for prediction, label in zip(predictions_t, labels_t)
-# ]
-
-# results_t = metric.compute(predictions=true_predictions_t, references=true_labels_t)
-
-# print(f"**Training Set Results** \n {results_t}")
-
-
 
 
 
