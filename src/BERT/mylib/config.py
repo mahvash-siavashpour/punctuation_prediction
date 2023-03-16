@@ -1,10 +1,9 @@
-from torch import nn
+import os
 
 
-
-raw_data_file_name = "03_wiki_normalized_tokenized_word_neighbouring.txt"
-train_file_name = 'Preprocessed/wiki/'+'train_wiki.csv'
-test_file_name = 'Preprocessed/wiki/'+'test_wiki.csv'
+# raw_data_file_name = "03_wiki_normalized_tokenized_word_neighbouring.txt"
+# train_file_name = 'Preprocessed/wiki/'+'train_wiki.csv'
+# test_file_name = 'Preprocessed/wiki/'+'test_wiki.csv'
 
 
 # raw_data_file_name = '07_taaghche_v2_normalized_tokenized_word_neighbouring_head200K.txt'
@@ -13,58 +12,87 @@ test_file_name = 'Preprocessed/wiki/'+'test_wiki.csv'
 
 
 
-unique_tags = set({'I-qMark', 'I-exMark', 'O', 'I-dot', 'I-comma'})
-tag2id = {'O': 0,
+# unique_tags = set({'I-qMark', 'I-exMark', 'O', 'I-dot', 'I-comma'})
+# tag2id = {'O': 0,
+#           'I-dot': 1,
+#           'I-comma': 2,
+#           'I-qMark': 3,
+#           'I-exMark':4
+#           }
+# id2tag = {id: tag for tag, id in tag2id.items()}
+
+
+
+
+
+def SetModelConfig(model_name, models):
+
+    model_config = models[model_name]
+    
+        
+    if not os.path.exists(model_config['save_model_path']):
+        os.makedirs(model_config['save_model_path'])
+        print("Directory " , model_config['save_model_path'] ,  " Created ")
+    else:    
+        print("Directory " , model_config['save_model_path'] ,  " already exists")
+
+
+    model_config['save_model_path'] = model_config['save_model_path'] + model_config['model_name'] + "_"+model_config['dataset_name'] 
+    model_config['log_file_path'] = model_config['log_file_path'] + model_config['model_name'] + "_"+model_config['dataset_name'] +".txt"
+
+
+    if model_config['dataset_name'] == "wiki":
+        model_config["raw_data_file_name"] = "../../Data/03_wiki_normalized_tokenized_word_neighbouring.txt"
+        model_config["train_file_name"] = '../../Data/Preprocessed/wiki/'+'train_wiki.csv'
+        model_config["test_file_name"] = '../../Data/Preprocessed/wiki/'+'test_wiki.csv'
+    
+    elif model_config['dataset_name'] == "taaghche":
+        model_config["raw_data_file_name"] = '../../Data/07_taaghche_v2_normalized_tokenized_word_neighbouring_head200K.txt'
+        model_config["train_file_name"] = '../../Data/Preprocessed/taaghche/'+'train_taaghche.csv'
+        model_config["test_file_name"] = '../../Data/Preprocessed/taaghche/'+'test_taaghche.csv'
+
+
+
+
+    if model_config["include_paragraph_tag"] == "no":
+        model_config["tag2id"] = {'O': 0,
           'I-dot': 1,
           'I-comma': 2,
           'I-qMark': 3,
           'I-exMark':4
           }
-id2tag = {id: tag for tag, id in tag2id.items()}
-
-
-
-bert_model_name = 'HooshvareLab/distilbert-fa-zwnj-base'
-# bert_model_name = 'HooshvareLab/bert-fa-base-uncased'
-chunksize = 100
-train_data_size = 50000000
-test_data_size = 20000000
-
-max_len = 200
-
-
-EPOCHS_classifier = 5
-LEARNING_RATE = 3.5e-06
-
-EPOCHS_finetune=5
-
-
-
-
-# def SetModelAndPaths(model_name, models):
-#     global model_config
-#     global plots_path
-#     global dataset_path
-#     global stan_file_path
-#     global stan_output_dir
-#     model_config = models[model_name]
-#     plots_path = plots_root + model_config['plots_folder_name'] + '/'
-#     dataset_path = datasets_root + model_config['dataset_name']
-#     stan_file_path = stan_files_root + model_config['stan_file']
-#     stan_output_dir = saved_models_root + model_config['model_name'] + '/'
-#     os.path
     
-#     if not os.path.exists(plots_path):
-#         os.makedirs(plots_path)
-#         print("Directory " , plots_path ,  " Created ")
-#     else:    
-#         print("Directory " , plots_path ,  " already exists")
+    elif model_config["include_paragraph_tag"] == "yes":
+        model_config["tag2id"] = {'O': 0,
+          'I-dot': 1,
+          'I-comma': 2,
+          'I-qMark': 3,
+          'I-exMark':4,
+          'I-par':5
+          }
         
-#     if not os.path.exists(stan_output_dir):
-#         os.makedirs(stan_output_dir)
-#         print("Directory " , stan_output_dir ,  " Created ")
-#     else:    
-#         print("Directory " , stan_output_dir ,  " already exists")
+    model_config["id2tag"] = {id: tag for tag, id in model_config["tag2id"].items()}
+    model_config["unique_tags"] = set(model_config["tag2id"])
+ 
+
+    return model_config
 
 
-#     return 
+
+
+
+
+
+# bert_model_name = 'HooshvareLab/distilbert-fa-zwnj-base'
+# # bert_model_name = 'HooshvareLab/bert-fa-base-uncased'
+# chunksize = 100
+# train_data_size = 50000000
+# test_data_size = 20000000
+
+# seq_max_len = 200
+
+
+# EPOCHS_classifier = 5
+# LEARNING_RATE = 3.5e-06
+
+# EPOCHS_finetune=5

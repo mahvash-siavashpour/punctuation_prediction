@@ -17,7 +17,7 @@ id2tags = config.id2tag
 
 def loss_fct(weights):
     if weights != None:
-        loss_fct = nn.CrossEntropyLoss(weights=weights)
+        loss_fct = nn.CrossEntropyLoss(weight=weights)
         return loss_fct
     else:
         loss_fct = nn.CrossEntropyLoss()
@@ -25,7 +25,7 @@ def loss_fct(weights):
 
 
 class CustomModel(nn.Module):
-    def __init__(self, num_classes, checkpoint, bert_model_name, hidden_dim=100, mlp_dim=100, dropout=0.1, loss_fct=nn.CrossEntropyLoss(), model_type='mlp'):
+    def __init__(self, num_classes, bert_model_name, hidden_dim=100, mlp_dim=100, dropout=0.1, loss_fct=nn.CrossEntropyLoss(), model_type='mlp'):
         super(CustomModel,self).__init__() 
 
         self.num_labels = num_classes
