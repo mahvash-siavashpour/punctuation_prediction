@@ -241,7 +241,7 @@ true_labels = [
     for prediction, label in zip(predictions, labels)
 ]
 
-results = bert_train_func.compute_metrics((true_predictions, true_labels))
+results = compute_metrics((true_predictions, true_labels))
 print(f"**Testing Set Results** \n {results}")
 
 
@@ -265,7 +265,7 @@ true_labels_t = [
     for prediction, label in zip(predictions_t, labels_t)
 ]
 
-results_t = bert_train_func.compute_metrics((true_predictions_t, true_labels_t))
+results_t = compute_metrics((true_predictions_t, true_labels_t))
 
 print(f"**Training Set Results** \n {results_t}")
 
