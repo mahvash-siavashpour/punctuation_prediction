@@ -217,10 +217,11 @@ if configurations["fine_tune"] == "yes":
 
 
 
-if configurations["pre_tune"] == "no":
-    trainer = trainer2
-elif configurations["fine_tune"] == "no":
+if configurations["fine_tune"] == "no":
     trainer = trainer1
+else: 
+    trainer = trainer2
+
 
 
 #prediction on test set
