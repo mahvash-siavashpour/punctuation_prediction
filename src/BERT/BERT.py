@@ -17,6 +17,8 @@ import argparse
 import json
 import sys
 
+from datasets import load_metric
+metric = load_metric("seqeval")
 
 
 parser = argparse.ArgumentParser(description='Makes Predition for Punctuation Marks')
@@ -248,7 +250,8 @@ true_labels = [
     for prediction, label in zip(predictions, labels)
 ]
 
-results = compute_metrics((true_predictions, true_labels))
+print()
+results = metric.compute(predictions=true_predictions, references=true_labels)
 print(f"**Testing Set Results** \n {results}")
 
 
@@ -272,7 +275,7 @@ true_labels_t = [
     for prediction, label in zip(predictions_t, labels_t)
 ]
 
-results_t = compute_metrics((true_predictions_t, true_labels_t))
+results_t = metric.compute(predictions=true_predictions_t, references=true_labels_t)
 
 print(f"**Training Set Results** \n {results_t}")
 
