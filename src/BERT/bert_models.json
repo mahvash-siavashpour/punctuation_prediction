@@ -16,6 +16,6 @@
         "pre_tune": "yes",
         "fine_tune": "yes",
         "save_model_path": "../../saved_models/BERT/",
-        "log_file_path": "../../logs/"
+        "log_file_path": "../../logs/BERT/"
     }
 }

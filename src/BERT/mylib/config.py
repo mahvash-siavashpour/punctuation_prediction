@@ -37,8 +37,15 @@ def SetModelConfig(model_name, models):
         print("Directory " , model_config['save_model_path'] ,  " already exists")
 
 
-    model_config['save_model_path'] = model_config['save_model_path'] + model_config['model_name'] + "_"+model_config['dataset_name'] 
-    model_config['log_file_path'] = model_config['log_file_path'] + model_config['model_name'] + "_"+model_config['dataset_name'] +".txt"
+    if not os.path.exists(model_config['log_file_path']):
+        os.makedirs(model_config['log_file_path'])
+        print("Directory " , model_config['log_file_path'] ,  " Created ")
+    else:    
+        print("Directory " , model_config['log_file_path'] ,  " already exists")
+
+
+    model_config['save_model_path'] = model_config['save_model_path'] + model_config['model_name'] + "_"+ model_config["model_architecture"]+"_"+model_config['dataset_name'] 
+    model_config['log_file_path'] = model_config['log_file_path'] + model_config['model_name'] + "_"+ model_config["model_architecture"]+"_"+model_config['dataset_name']  +".txt"
 
 
     if model_config['dataset_name'] == "wiki":
