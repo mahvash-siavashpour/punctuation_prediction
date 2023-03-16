@@ -45,10 +45,10 @@ def SetModelConfig(model_name, models):
 
 
     if not os.path.exists(model_config['log_file_path']+"Inference/"):
-        os.makedirs(model_config['log_file_path'])
-        print("Directory " , model_config['log_file_path'] ,  " Created ")
+        os.makedirs(model_config['log_file_path']+"Inference/")
+        print("Directory " , model_config['log_file_path']+"Inference/" ,  " Created ")
     else:    
-        print("Directory " , model_config['log_file_path'] ,  " already exists")
+        print("Directory " , model_config['log_file_path']+"Inference/" ,  " already exists")
 
 
     model_config['save_model_path'] = model_config['save_model_path'] + model_config['model_name'] + "_"+ model_config["model_architecture"]+"_"+model_config['dataset_name'] 
