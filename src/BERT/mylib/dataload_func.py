@@ -1,13 +1,10 @@
 import pandas as pd
 import torch
-from mylib import config
 import numpy as np
 
-unique_tags = config.unique_tags
-tag2id = config.tag2id
-id2tag = config.id2tag
 
-def encode_tags_first(tags, encoding, label_all_tokens = False):
+
+def encode_tags_first(tags, encoding, tag2id, label_all_tokens = False):
     
     # create an empty array of -100 of length max_length
     encoded_labels = np.ones(len(encoding["attention_mask"]), dtype=int) * -100
@@ -28,12 +25,13 @@ def encode_tags_first(tags, encoding, label_all_tokens = False):
 
 
 class MyDataset(torch.utils.data.Dataset):
-    def __init__(self,text, tags, tokenizer, max_len=512):
+    def __init__(self,text, tags, tokenizer, tag2id, max_len=512):
       
         self.tokenizer = tokenizer
         self.max_len = max_len
         self.text = text
         self.tags = tags
+        self.tag2id = tag2id
 
     def __len__(self):
         return len(self.text)
@@ -58,7 +56,7 @@ class MyDataset(torch.utils.data.Dataset):
                              max_length=self.max_len
                              )
         # step3: create encoded labels
-        encoded_labels = encode_tags_first(tags, encoding)
+        encoded_labels = encode_tags_first(tags, encoding, self.tag2id)
 
         encoding.pop("offset_mapping") # we don't want to pass this to the model
 
@@ -70,7 +68,7 @@ class MyDataset(torch.utils.data.Dataset):
     
 
 
-def read_data(file_name, nrows):
+def read_data(file_name, nrows, chunksize):
   df = pd.read_csv(file_name,sep=',', nrows=nrows)
   text = df.iloc[:, 0].values
   tags = df.iloc[:, 1].values
@@ -82,7 +80,7 @@ def read_data(file_name, nrows):
   tmp_tags = []
 
   for word, label in zip(text, tags):
-    if i % config.chunksize == 0 and i !=0:
+    if i % chunksize == 0 and i !=0:
       input_tokens.append(tmp_tokens)
       input_labels.append(tmp_tags)
       tmp_tokens = []

@@ -68,12 +68,12 @@ chunksize = configurations["chunksize"]
 from transformers import DistilBertTokenizerFast
 tokenizer = DistilBertTokenizerFast.from_pretrained(bert_model_name)
 
-train_tokens, train_tags = dataload_func.read_data(configurations["train_file_name"], configurations["train_data_size"])
-test_tokens, test_tags = dataload_func.read_data(configurations["test_file_name"], configurations["test_data_size"])
+train_tokens, train_tags = dataload_func.read_data(configurations["train_file_name"], configurations["train_data_size"], chunksize=configurations["chunksize"])
+test_tokens, test_tags = dataload_func.read_data(configurations["test_file_name"], configurations["test_data_size"], chunksize=configurations["chunksize"])
 
 # Commented out IPython magic to ensure Python compatibility.
-training_set = dataload_func.MyDataset(text=train_tokens, tags=train_tags, tokenizer=tokenizer, max_len=configurations["bert_seq_max_len"])
-testing_set = dataload_func.MyDataset(text=test_tokens, tags=test_tags, tokenizer=tokenizer, max_len=configurations["bert_seq_max_len"])
+training_set = dataload_func.MyDataset(text=train_tokens, tags=train_tags, tokenizer=tokenizer, tag2id=tag2id, max_len=configurations["bert_seq_max_len"])
+testing_set = dataload_func.MyDataset(text=test_tokens, tags=test_tags, tokenizer=tokenizer, tag2id=tag2id, max_len=configurations["bert_seq_max_len"])
 # %time
 
 print(f"length of the sequence: {len(training_set[0]['labels'])}")
@@ -164,7 +164,7 @@ if configurations["pre_tune"] == "yes":
         args=training_args1,                  # training arguments, defined above
         train_dataset=training_set,         # training dataset
         eval_dataset=testing_set,             # evaluation dataset
-        compute_metrics = bert_train_func.compute_metrics,
+        compute_metrics = bert_train_func.compute_metrics(id2tags=id2tag),
         optimizers = (optimizer, transformers.get_scheduler('linear', optimizer, num_training_steps=math.ceil(len(training_set)/16)* configurations["EPOCHS_classifier"], num_warmup_steps=300))
     )
 
@@ -196,7 +196,7 @@ if configurations["fine_tune"] == "yes":
         args=training_args2,                  # training arguments, defined above
         train_dataset=training_set,         # training dataset
         eval_dataset=testing_set,             # evaluation dataset
-        compute_metrics = bert_train_func.compute_metrics,
+        compute_metrics = bert_train_func.compute_metrics(id2tags=id2tag),
         optimizers = (optimizer, transformers.get_scheduler('linear', optimizer, num_training_steps=math.ceil(len(training_set)/16)* configurations["EPOCHS_finetune"], num_warmup_steps=300))
     )
 

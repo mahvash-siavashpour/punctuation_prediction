@@ -2,17 +2,13 @@ from transformers import Trainer
 from torch import nn
 from transformers.modeling_outputs import TokenClassifierOutput
 from transformers import DistilBertModel
-from mylib import config
+# from mylib import config
 import numpy as np
 # from sklearn import metrics
 
 from datasets import load_metric
 metric = load_metric("seqeval")
 
-
-
-u_tags =list(config.unique_tags)
-id2tags = config.id2tag
 
 
 def loss_fct(weights):
@@ -34,7 +30,7 @@ class CustomModel(nn.Module):
 
         #Load Model with given checkpoint and extract its body
         # self.bert = transformers.AutoModel.from_pretrained(checkpoint,config=transformers.AutoConfig.from_pretrained(checkpoint, output_attentions=True,output_hidden_states=True))
-        self.bert = DistilBertModel.from_pretrained(bert_model_name, num_labels=len(config.unique_tags))
+        self.bert = DistilBertModel.from_pretrained(bert_model_name, num_labels=num_classes)
         self.dropout = nn.Dropout(dropout) 
 
         if self.model_type == 'simple_classifier':
@@ -113,17 +109,17 @@ class CustomModel(nn.Module):
         )
 
 
-def compute_metrics(p):
+def compute_metrics(p, id2tag):
     predictions, labels = p
     predictions = np.argmax(predictions, axis=2)
 
     # Remove ignored index (special tokens)
     true_predictions = [
-        [id2tags[p] for (p, l) in zip(prediction, label) if l != -100]
+        [id2tag[p] for (p, l) in zip(prediction, label) if l != -100]
         for prediction, label in zip(predictions, labels)
     ]
     true_labels = [
-        [id2tags[l] for (p, l) in zip(prediction, label) if l != -100]
+        [id2tag[l] for (p, l) in zip(prediction, label) if l != -100]
         for prediction, label in zip(predictions, labels)
     ]
 
