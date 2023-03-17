@@ -67,8 +67,10 @@ bert_model_name = configurations["bert_model_name"]
 chunksize = configurations["chunksize"]
 
 # tokenizer = DistilBertTokenizerFast.from_pretrained(bert_model_name)
-from transformers import DistilBertTokenizerFast
-tokenizer = DistilBertTokenizerFast.from_pretrained(bert_model_name)
+# from transformers import DistilBertTokenizerFast
+from transformers import AutoTokenizer
+
+tokenizer = AutoTokenizer.from_pretrained(bert_model_name)
 
 train_tokens, train_tags = dataload_func.read_data(configurations["train_file_name"], configurations["train_data_size"], chunksize=configurations["chunksize"])
 test_tokens, test_tags = dataload_func.read_data(configurations["test_file_name"], configurations["test_data_size"], chunksize=configurations["chunksize"])

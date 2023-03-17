@@ -1,7 +1,8 @@
 from transformers import Trainer
 from torch import nn
 from transformers.modeling_outputs import TokenClassifierOutput
-from transformers import DistilBertModel
+# from transformers import DistilBertModel
+from transformers import AutoModel
 # from mylib import config
 import numpy as np
 # from sklearn import metrics
@@ -30,7 +31,7 @@ class CustomModel(nn.Module):
 
         #Load Model with given checkpoint and extract its body
         # self.bert = transformers.AutoModel.from_pretrained(checkpoint,config=transformers.AutoConfig.from_pretrained(checkpoint, output_attentions=True,output_hidden_states=True))
-        self.bert = DistilBertModel.from_pretrained(bert_model_name, num_labels=num_classes)
+        self.bert = AutoModel.from_pretrained(bert_model_name)
         self.dropout = nn.Dropout(dropout) 
 
         if self.model_type == 'simple_classifier':
