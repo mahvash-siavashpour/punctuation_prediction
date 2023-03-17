@@ -80,7 +80,7 @@
         "model_name": "bert_5",
         "model_architecture": "lstm",
         "dataset_name": "wiki",
-        "bert_model_name": "HooshvareLab/bert-fa-base-uncased",
+        "bert_model_name": "HooshvareLab/bert-fa-zwnj-base",
         "chunksize": 100,
         "train_data_size":15000000,
         "test_data_size": 4000000,
