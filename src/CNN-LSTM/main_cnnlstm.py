@@ -38,7 +38,7 @@ args = parser.parse_args()
 
 
 ### read models configuration json file
-with open("bert_models.json") as f:
+with open("cnnlstm_models.json") as f:
     models = json.load(f)
     models_name = list(models.keys())
 
