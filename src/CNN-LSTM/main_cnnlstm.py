@@ -18,10 +18,6 @@ import fasttext
 from mylib import cnnlstm_train_func
 from mylib import dataload_func
 from mylib import config
-punc = ['.', '،', '؟', '!']
-# raw_data_file_name = "03_wiki_normalized_tokenized_word_neighbouring.txt"
-# train_file_name = 'Preprocessed/wiki/'+'train_wiki.csv'
-# test_file_name = 'Preprocessed/wiki/'+'test_wiki.csv'
 
 import argparse
 import json
@@ -29,6 +25,9 @@ import sys
 
 from datasets import load_metric
 metric = load_metric("seqeval")
+
+punc = ['.', '،', '؟', '!']
+
 
 
 parser = argparse.ArgumentParser(description='Makes Predition for Punctuation Marks')
@@ -130,8 +129,8 @@ torch.save(model.state_dict(), configurations["save_model_path"])
 
 
 
-import inference_cnnlstm
-text = "من در ایران زندگی میکنم ولی شما چطور زندگی میکنید"
-print(inference_cnnlstm.get_punc(text))
+# import inference_cnnlstm
+# text = "من در ایران زندگی میکنم ولی شما چطور زندگی میکنید"
+# print(inference_cnnlstm.get_punc(text))
 
 

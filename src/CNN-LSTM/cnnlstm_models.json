@@ -2,8 +2,8 @@
     "cnnlstm_1": {
         "model_name": "cnnlstm_1",
         "dataset_name": "wiki",
-        "train_data_size":500000,
-        "test_data_size":200000,
+        "train_data_size":5000000,
+        "test_data_size":2000000,
         "cnnlstm_seq_max_len": 100,
         "EPOCHS": 5,
         "LEARNING_RATE": 0.001,
