@@ -1,0 +1,15 @@
+{
+    "cnnlstm_1": {
+        "model_name": "cnnlstm_1",
+        "dataset_name": "wiki",
+        "train_data_size":500000,
+        "test_data_size":200000,
+        "cnnlstm_seq_max_len": 100,
+        "EPOCHS": 5,
+        "LEARNING_RATE": 0.001,
+
+        "include_paragraph_tag": "no",
+        "save_model_path": "../../saved_models/CNNLSTM/",
+        "log_file_path": "../../logs/CNNLSTM/"
+    }
+}
