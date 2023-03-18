@@ -8,7 +8,7 @@ import fasttext
 
 
 def read_data(file_name, nrows, seq_size):
-  df = pd.read_csv(root+file_name,sep=',', nrows=nrows)
+  df = pd.read_csv(file_name,sep=',', nrows=nrows)
   text = df.iloc[:, 0].values
   tags = df.iloc[:, 1].values
   i = 0 
