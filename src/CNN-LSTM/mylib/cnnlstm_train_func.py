@@ -161,7 +161,7 @@ def train(epochs, model, writer, train_loader, test_loader, optimizer, loss_func
 
         avg_vloss = running_vloss / (i + 1)
     
-        print(f'LOSS train {avg_loss} valid {avg_vloss} valid metrics {results}')
+        print(f'LOSS train {avg_loss} valid {avg_vloss} \n ***Test metrics*** {results}')
 
         # Log the running loss averaged per batch
         # for both training and validation
