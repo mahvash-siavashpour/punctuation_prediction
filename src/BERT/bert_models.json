@@ -96,7 +96,7 @@
         "log_file_path": "../../logs/BERT/"
     },
     "bert_6": {
-        "model_name": "bert_5",
+        "model_name": "bert_6",
         "model_architecture": "lstm",
         "dataset_name": "wiki",
         "bert_model_name": "HooshvareLab/distilbert-fa-zwnj-base",
