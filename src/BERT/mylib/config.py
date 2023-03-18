@@ -41,7 +41,7 @@ def SetModelConfig(model_name, models):
             par = "paragraph_"
         model_config["raw_data_file_name"] = data_root+ "03_wiki_normalized_tokenized_word_neighbouring.txt"
         model_config["train_file_name"] = data_root+ 'Preprocessed/wiki/'+ par +'train_wiki.csv'
-        model_config["test_file_name"] = data_root+ 'Data/Preprocessed/wiki/'+ par +'test_wiki.csv'
+        model_config["test_file_name"] = data_root+ 'Preprocessed/wiki/'+ par +'test_wiki.csv'
     
     elif model_config['dataset_name'] == "taaghche":
         par = ""
