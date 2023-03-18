@@ -83,24 +83,25 @@ class MyDataset(torch.utils.data.Dataset):
         return item
 
 
-def label_counts(id2tag, training_loader):
-    label_count = {}
-    total_labels = 0
-    for u in id2tag.keys():
-        label_count[str(u)] = 0
+def label_counts(id2tag, train_loader):
+  label_count = {}
+  total_labels = 0
+  for u in id2tag.keys():
+    label_count[str(u)] = 0
 
-    for idx, batch in enumerate(training_loader):
-        labels = batch['labels']
-        
-        for data in labels:
-            for e in data:
+  for idx, batch in enumerate(train_loader):
+    labels = batch['y']
 
-                if e == -100:
-                    continue
-                label_count[str(int(e))] += 1
-                total_labels += 1
+    for data in labels:
+      for e in data:
 
-    return label_count
+        if e == -100:
+          continue
+        label_count[str(int(e))] += 1
+        total_labels += 1
+
+  return label_count
+
 
 
 def loss_weights(label_count):
@@ -112,7 +113,7 @@ def loss_weights(label_count):
         # w =  np.sqrt(total_labels/label_count[i])
         # w = np.sqrt(1/label_count[i])
         b = 0.9
-        w = 1/float(((1- b**np.log(label_count[i]))/(1-b)))
+        w = 1/((1- b**np.log(label_count[i]))/(1-b))
         weights.append(w)
         # print(w)
 
@@ -120,3 +121,4 @@ def loss_weights(label_count):
     weights = weights / np.sum(weights)
         
     return weights
+
