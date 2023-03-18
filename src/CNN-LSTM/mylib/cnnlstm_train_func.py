@@ -107,8 +107,11 @@ def train_one_epoch(epoch_index, tb_writer, train_loader, optimizer, model, loss
 
             accumulated_outputs = []
             accumulated_ys= []
+    
+    if cnt > 0:
+        ave_f1 /= cnt
 
-    return last_loss, ave_f1/cnt
+    return last_loss, ave_f1
 
 
 
