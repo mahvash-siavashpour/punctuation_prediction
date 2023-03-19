@@ -6,7 +6,7 @@ def SetModelConfig(model_name, models):
     model_config = models[model_name]
 
     data_root = "../../Data/"
-    
+
         
     if not os.path.exists(model_config['save_model_path']):
         os.makedirs(model_config['save_model_path'])
