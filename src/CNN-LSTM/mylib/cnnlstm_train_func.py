@@ -69,6 +69,11 @@ def train_one_epoch(epoch_index, tb_writer, train_loader, optimizer, model, loss
         outputs = model(x)
 
         # Compute the loss and its gradients
+        print(outputs.view(-1, 5))
+        print(y.view(-1))
+
+        print(outputs.view(-1, 5).shape)
+        print(y.view(-1).shape)
         loss = loss_function(outputs.view(-1, 5), y.view(-1))
         loss.backward()
 
