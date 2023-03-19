@@ -28,5 +28,20 @@
         "include_paragraph_tag": "yes",
         "save_model_path": "../../saved_models/CNNLSTM/",
         "log_file_path": "../../logs/CNNLSTM/"
+    },
+    "cnnlstm_3": {
+        "model_name": "cnnlstm_3",
+        "dataset_name": "taaghche",
+        "lstm_hidden_size": 10,
+        "input_size": 300,
+        "train_data_size":15000000,
+        "test_data_size": 4000000,
+        "cnnlstm_seq_max_len": 100,
+        "EPOCHS": 10,
+        "LEARNING_RATE": 0.001,
+
+        "include_paragraph_tag": "no",
+        "save_model_path": "../../saved_models/CNNLSTM/",
+        "log_file_path": "../../logs/CNNLSTM/"
     }
 }
