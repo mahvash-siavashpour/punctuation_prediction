@@ -12,7 +12,7 @@ import torch
 import csv
 import language_lists
 import argparse
-
+import os
 '''
 The code must be run in this format:
 
@@ -39,6 +39,15 @@ if args.paragraph == 'par':
 
 
 punc = ['.', '،', '؟', '!']
+
+if not os.path.exists('Preprocessed/'+dataset_name+'/'):
+    os.makedirs('Preprocessed/'+dataset_name+'/')
+    print("Directory " , 'Preprocessed/'+dataset_name+'/' ,  " Created ")
+else:    
+    print("Directory " , 'Preprocessed/'+dataset_name+'/' ,  " already exists")
+
+
+
 
 if dataset_name == "wiki":
   raw_data_file_name = "03_wiki_normalized_tokenized_word_neighbouring.txt"
