@@ -9,7 +9,7 @@ from datasets import load_metric
 metric = load_metric("seqeval")
 
 class CNN_LSTM(nn.Module):
-    def __init__(self, input_size, hidden_size, num_layers, num_classes, use_cnn="yes"):
+    def __init__(self, input_size, hidden_size, num_layers, num_classes, use_cnn):
         super(CNN_LSTM, self).__init__()
 
         self.use_cnn = use_cnn
@@ -39,7 +39,7 @@ class CNN_LSTM(nn.Module):
             # print(out.shape)
             out, _ = self.lstm(out)
         else:
-            out, _ = self.lstm(out)
+            out, _ = self.lstm(x)
         # print(out.shape)
 
         predictions  = self.fc(out)
