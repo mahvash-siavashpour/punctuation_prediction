@@ -8,9 +8,7 @@ Original file is located at
 
 root = "../../Data/"
 import torch
-import pandas as pd
 from torch import nn
-import numpy as np
 from sklearn.model_selection import train_test_split
 import fasttext
 
@@ -61,7 +59,7 @@ x_test, y_test = dataload_func.read_data(configurations["test_file_name"], confi
 
 
 
-model = cnnlstm_train_func.CNN_LSTM(input_size=300, hidden_size=10, num_layers=1, num_classes=5)
+model = cnnlstm_train_func.CNN_LSTM(input_size=configurations['input_size'], hidden_size=configurations['lstm_hidden_size'], num_layers=1, num_classes=len(unique_tags))
 
 print(model)
 

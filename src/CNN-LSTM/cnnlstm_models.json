@@ -2,6 +2,8 @@
     "cnnlstm_1": {
         "model_name": "cnnlstm_1",
         "dataset_name": "wiki",
+        "lstm_hidden_size": 10,
+        "input_size": 300,
         "train_data_size":15000000,
         "test_data_size": 4000000,
         "cnnlstm_seq_max_len": 100,
@@ -15,6 +17,8 @@
     "cnnlstm_2": {
         "model_name": "cnnlstm_2",
         "dataset_name": "taaghche",
+        "lstm_hidden_size": 10,
+        "input_size": 300,
         "train_data_size":5000000,
         "test_data_size": 1000000,
         "cnnlstm_seq_max_len": 100,

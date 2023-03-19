@@ -1,10 +1,7 @@
 
 import torch
-import pandas as pd
 from torch import nn
 import numpy as np
-from sklearn.model_selection import train_test_split
-import fasttext
 from datetime import datetime
 
 

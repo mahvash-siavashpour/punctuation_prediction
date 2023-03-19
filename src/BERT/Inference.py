@@ -125,8 +125,8 @@ def bert_get_punc(text, tokenizer, id2tag, is_splitted=False, max_length=configu
 
 
 
-from transformers import DistilBertTokenizerFast
-tokenizer = DistilBertTokenizerFast.from_pretrained(bert_model_name)
+from transformers import AutoTokenizer
+tokenizer = AutoTokenizer.from_pretrained(bert_model_name)
 
 
 
