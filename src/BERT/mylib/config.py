@@ -51,9 +51,9 @@ def SetModelConfig(model_name, models):
 
 
 
-    model_config['save_model_path'] = model_config['save_model_path'] + model_config['model_name'] + "_"+ model_config["model_architecture"]+"_"+model_config['dataset_name'] +par
-    model_config['log_file_path'] = model_config['log_file_path'] + model_config['model_name'] + "_"+ model_config["model_architecture"]+"_"+model_config['dataset_name']  +par+".txt"
-    model_config['log_file_path_inference'] = model_config['log_file_path'] + "Inference/" + model_config['model_name'] + "_"+ model_config["model_architecture"]+"_"+model_config['dataset_name']  +par+".txt"
+    model_config['save_model_path'] = model_config['save_model_path'] + model_config['model_name'] + "_"+ model_config["model_architecture"]+"_"+par+model_config['dataset_name'] 
+    model_config['log_file_path'] = model_config['log_file_path'] + model_config['model_name'] + "_"+ model_config["model_architecture"]+"_"+par+model_config['dataset_name']  +".txt"
+    model_config['log_file_path_inference'] = model_config['log_file_path'] + "Inference/" + model_config['model_name'] + "_"+ model_config["model_architecture"]+"_"+par+model_config['dataset_name']  +".txt"
 
 
    
