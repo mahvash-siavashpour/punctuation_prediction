@@ -37,7 +37,7 @@ tag2id = configurations["tag2id"]
 id2tag = configurations["id2tag"]
 
 
-model = cnnlstm_train_func.CNN_LSTM(input_size=configurations['input_size'], hidden_size=configurations['lstm_hidden_size'], num_layers=1, num_classes=len(unique_tags))
+model = cnnlstm_train_func.CNN_LSTM(input_size=configurations['input_size'], hidden_size=configurations['lstm_hidden_size'], num_layers=1, num_classes=len(list(unique_tags)))
 
 
 model.load_state_dict(torch.load(configurations["save_model_path"]))
