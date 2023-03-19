@@ -119,7 +119,8 @@ best_vloss = 1_000_000.
 
 model = cnnlstm_train_func.train(epochs=EPOCHS, model=model, writer=writer, 
                                      train_loader=train_loader, test_loader=test_loader, optimizer=optimizer,
-                                     loss_function=loss_function, id2tag=id2tag, timestamp=timestamp, best_vloss=best_vloss)
+                                     loss_function=loss_function, id2tag=id2tag, timestamp=timestamp, best_vloss=best_vloss,
+                                     num_classes=len(list(unique_tags)))
 
 # save model
 

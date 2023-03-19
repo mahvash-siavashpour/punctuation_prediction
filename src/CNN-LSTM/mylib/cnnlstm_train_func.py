@@ -44,7 +44,7 @@ class CNN_LSTM(nn.Module):
 
 
 
-def train_one_epoch(epoch_index, tb_writer, train_loader, optimizer, model, loss_function, id2tag):
+def train_one_epoch(epoch_index, tb_writer, train_loader, optimizer, model, loss_function, id2tag, num_classes):
     running_loss = 0.
     last_loss = 0.
     ave_f1 = 0
@@ -71,10 +71,10 @@ def train_one_epoch(epoch_index, tb_writer, train_loader, optimizer, model, loss
         # Compute the loss and its gradients
         # print(outputs.view(-1, 5))
         # print(y.view(-1))
-        print(x.shape)
-        print(outputs.view(-1, 5).shape)
-        print(y.view(-1).shape)
-        loss = loss_function(outputs.view(-1, 5), y.view(-1))
+        # print(x.shape)
+        # print(outputs.view(-1, 5).shape)
+        # print(y.view(-1).shape)
+        loss = loss_function(outputs.view(-1, num_classes), y.view(-1))
         loss.backward()
 
         # Adjust learning weights
@@ -117,7 +117,7 @@ def train_one_epoch(epoch_index, tb_writer, train_loader, optimizer, model, loss
 
 
 
-def train(epochs, model, writer, train_loader, test_loader, optimizer, loss_function, id2tag, timestamp, best_vloss):
+def train(epochs, model, writer, train_loader, test_loader, optimizer, loss_function, id2tag, timestamp, best_vloss, num_classes):
     
 
     for epoch in range(epochs):
@@ -125,7 +125,7 @@ def train(epochs, model, writer, train_loader, test_loader, optimizer, loss_func
 
         # Make sure gradient tracking is on, and do a pass over the data
         model.train(True)
-        avg_loss, avg_f1 = train_one_epoch(epoch, writer, train_loader, optimizer, model, loss_function, id2tag)
+        avg_loss, avg_f1 = train_one_epoch(epoch, writer, train_loader, optimizer, model, loss_function, id2tag, num_classes)
         print(f"Average F1: {avg_f1}")
 
         # We don't need gradients on to do reporting
@@ -142,7 +142,7 @@ def train(epochs, model, writer, train_loader, test_loader, optimizer, loss_func
             vinputs = vinputs.permute(0, 2, 1)
             vlabels = vdata['y']
             voutputs = model(vinputs)
-            vloss = loss_function(voutputs.view(-1, 5), vlabels.view(-1))
+            vloss = loss_function(voutputs.view(-1, num_classes), vlabels.view(-1))
             running_vloss += vloss
 
             new_vlabels = vlabels.detach().numpy()
