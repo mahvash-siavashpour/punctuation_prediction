@@ -66,7 +66,7 @@ def insert_punc(output):
         elif tag == 'I-exMark':
             result.append("!")
         elif tag == "I-par":
-           result.append("\n")
+           result.append(".\n")
     return result
 
 

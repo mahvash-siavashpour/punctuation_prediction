@@ -74,12 +74,12 @@ train_dataset = dataload_func.MyDataset(x_train, y_train, tag2id, fasttext_model
 test_dataset = dataload_func.MyDataset(x_test, y_test, tag2id, fasttext_model)
 # Parameters
 
-train_params = {'batch_size': 8,
+train_params = {'batch_size': 32,
                 'shuffle': False,
                 'num_workers': 0
                 }
 
-test_params = {'batch_size': 8,
+test_params = {'batch_size': 32,
                 'shuffle': False,
                 'num_workers': 0
                 }

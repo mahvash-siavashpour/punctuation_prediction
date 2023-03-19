@@ -84,9 +84,9 @@ print(f"length of the sequence: {len(training_set[0]['labels'])}")
 
 # Parameters
 
-train_params = {'batch_size': 8,
+train_params = {'batch_size': 32,
                 'shuffle': False,
-                'num_workers': 2
+                'num_workers': 32
                 }
 
 test_params = {'batch_size': 8,
@@ -156,8 +156,8 @@ if configurations["pre_tune"] == "yes":
     training_args1 = TrainingArguments(
         output_dir='./results',          # output directory
         num_train_epochs=configurations["EPOCHS_classifier"],              # total number of training epochs
-        per_device_train_batch_size=16,  # batch size per device during training
-        per_device_eval_batch_size=16,   # batch size for evaluation
+        per_device_train_batch_size=32,  # batch size per device during training
+        per_device_eval_batch_size=32,   # batch size for evaluation
         warmup_steps=300,                # number of warmup steps for learning rate scheduler
         weight_decay=0.01,               # strength of weight decay
         logging_dir='./logs',            # directory for storing logs
@@ -189,8 +189,8 @@ if configurations["fine_tune"] == "yes":
     training_args2 = TrainingArguments(
         output_dir='./results',          # output directory
         num_train_epochs=configurations["EPOCHS_finetune"],              # total number of training epochs
-        per_device_train_batch_size=16,  # batch size per device during training
-        per_device_eval_batch_size=16,   # batch size for evaluation
+        per_device_train_batch_size=32,  # batch size per device during training
+        per_device_eval_batch_size=32,   # batch size for evaluation
         warmup_steps=300,                # number of warmup steps for learning rate scheduler
         weight_decay=0.01,               # strength of weight decay
         logging_dir='./logs',            # directory for storing logs
