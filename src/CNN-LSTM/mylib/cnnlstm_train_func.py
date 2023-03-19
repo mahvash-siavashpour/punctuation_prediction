@@ -39,6 +39,7 @@ class CNN_LSTM(nn.Module):
             # print(out.shape)
             out, _ = self.lstm(out)
         else:
+            x = x.permute(0, 2, 1)
             out, _ = self.lstm(x)
         # print(out.shape)
 
