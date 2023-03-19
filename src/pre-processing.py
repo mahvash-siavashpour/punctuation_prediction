@@ -40,11 +40,11 @@ if args.paragraph == 'par':
 
 punc = ['.', '،', '؟', '!']
 
-if not os.path.exists('Preprocessed/'+dataset_name+'/'):
-    os.makedirs('Preprocessed/'+dataset_name+'/')
-    print("Directory " , 'Preprocessed/'+dataset_name+'/' ,  " Created ")
+if not os.path.exists(root+'Preprocessed/'+dataset_name+'/'):
+    os.makedirs(root+'Preprocessed/'+dataset_name+'/')
+    print("Directory " , root+'Preprocessed/'+dataset_name+'/' ,  " Created ")
 else:    
-    print("Directory " , 'Preprocessed/'+dataset_name+'/' ,  " already exists")
+    print("Directory " , root+'Preprocessed/'+dataset_name+'/' ,  " already exists")
 
 
 
