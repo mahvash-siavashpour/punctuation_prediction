@@ -8,9 +8,9 @@ from datetime import datetime
 from datasets import load_metric
 metric = load_metric("seqeval")
 
-class CNN_LSTM(nn.Module):
+class LSTM_Model(nn.Module):
     def __init__(self, input_size, hidden_size, num_layers, num_classes, use_cnn):
-        super(CNN_LSTM, self).__init__()
+        super(LSTM_Model, self).__init__()
 
         self.use_cnn = use_cnn
 

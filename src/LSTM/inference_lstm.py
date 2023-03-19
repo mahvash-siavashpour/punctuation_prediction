@@ -1,6 +1,6 @@
 import torch
 import numpy as np
-from mylib import cnnlstm_train_func
+from mylib import lstm_train_func
 from mylib import dataload_func
 from mylib import config
 import argparse
@@ -21,7 +21,7 @@ args = parser.parse_args()
 
 
 ### read models configuration json file
-with open("cnnlstm_models.json") as f:
+with open("lstm_models.json") as f:
     models = json.load(f)
     models_name = list(models.keys())
 
@@ -37,7 +37,7 @@ tag2id = configurations["tag2id"]
 id2tag = configurations["id2tag"]
 
 
-model = cnnlstm_train_func.CNN_LSTM(input_size=configurations['input_size'], hidden_size=configurations['lstm_hidden_size'], 
+model = lstm_train_func.LSTM_Model(input_size=configurations['input_size'], hidden_size=configurations['lstm_hidden_size'], 
                                     num_layers=1, num_classes=len(list(unique_tags)), use_cnn=configurations['use_cnn'])
 
 

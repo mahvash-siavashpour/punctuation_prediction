@@ -1,50 +1,50 @@
 {
-    "cnnlstm_1": {
-        "model_name": "cnnlstm_1",
+    "lstm_1": {
+        "model_name": "lstm_1",
         "dataset_name": "wiki",
         "lstm_hidden_size": 10,
         "input_size": 300,
         "train_data_size":15000000,
         "test_data_size": 4000000,
-        "cnnlstm_seq_max_len": 100,
+        "lstm_seq_max_len": 100,
         "EPOCHS": 10,
         "LEARNING_RATE": 0.001,
         "use_cnn": "no",
 
         "include_paragraph_tag": "no",
-        "save_model_path": "../../saved_models/CNNLSTM/",
-        "log_file_path": "../../logs/CNNLSTM/"
+        "save_model_path": "../../saved_models/LSTM/",
+        "log_file_path": "../../logs/LSTM/"
     },
-    "cnnlstm_2": {
-        "model_name": "cnnlstm_2",
+    "lstm_2": {
+        "model_name": "lstm_2",
         "dataset_name": "taaghche",
         "lstm_hidden_size": 10,
         "input_size": 300,
         "train_data_size":5000000,
         "test_data_size": 1000000,
-        "cnnlstm_seq_max_len": 100,
+        "lstm_seq_max_len": 100,
         "EPOCHS": 5,
         "LEARNING_RATE": 0.001,
         "use_cnn": "no",
 
         "include_paragraph_tag": "yes",
-        "save_model_path": "../../saved_models/CNNLSTM/",
-        "log_file_path": "../../logs/CNNLSTM/"
+        "save_model_path": "../../saved_models/LSTM/",
+        "log_file_path": "../../logs/LSTM/"
     },
-    "cnnlstm_3": {
-        "model_name": "cnnlstm_3",
+    "lstm_3": {
+        "model_name": "lstm_3",
         "dataset_name": "taaghche",
         "lstm_hidden_size": 10,
         "input_size": 300,
         "train_data_size":15000000,
         "test_data_size": 4000000,
-        "cnnlstm_seq_max_len": 100,
+        "lstm_seq_max_len": 100,
         "EPOCHS": 10,
         "LEARNING_RATE": 0.001,
         "use_cnn": "no",
 
         "include_paragraph_tag": "no",
-        "save_model_path": "../../saved_models/CNNLSTM/",
-        "log_file_path": "../../logs/CNNLSTM/"
+        "save_model_path": "../../saved_models/LSTM/",
+        "log_file_path": "../../logs/LSTM/"
     }
 }

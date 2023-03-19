@@ -13,7 +13,7 @@ from sklearn.model_selection import train_test_split
 import fasttext
 
 
-from mylib import cnnlstm_train_func
+from mylib import lstm_train_func
 from mylib import dataload_func
 from mylib import config
 
@@ -35,7 +35,7 @@ args = parser.parse_args()
 
 
 ### read models configuration json file
-with open("cnnlstm_models.json") as f:
+with open("lstm_models.json") as f:
     models = json.load(f)
     models_name = list(models.keys())
 
@@ -54,12 +54,12 @@ id2tag = configurations["id2tag"]
 
 
 fasttext_model = fasttext.load_model('word-embeddings/cc.fa.300.bin')
-x_train, y_train = dataload_func.read_data(configurations["train_file_name"], configurations["train_data_size"], seq_size=configurations["cnnlstm_seq_max_len"])
-x_test, y_test = dataload_func.read_data(configurations["test_file_name"], configurations["test_data_size"], seq_size=configurations["cnnlstm_seq_max_len"])
+x_train, y_train = dataload_func.read_data(configurations["train_file_name"], configurations["train_data_size"], seq_size=configurations["lstm_seq_max_len"])
+x_test, y_test = dataload_func.read_data(configurations["test_file_name"], configurations["test_data_size"], seq_size=configurations["lstm_seq_max_len"])
 
 
 
-model = cnnlstm_train_func.CNN_LSTM(input_size=configurations['input_size'], hidden_size=configurations['lstm_hidden_size'], 
+model = lstm_train_func.LSTM_Model(input_size=configurations['input_size'], hidden_size=configurations['lstm_hidden_size'], 
                                     num_layers=1, num_classes=len(list(unique_tags)), use_cnn=configurations['use_cnn'])
 
 print(model)
@@ -118,7 +118,7 @@ best_vloss = 1_000_000.
 
 
 
-model = cnnlstm_train_func.train(epochs=EPOCHS, model=model, writer=writer, 
+model = lstm_train_func.train(epochs=EPOCHS, model=model, writer=writer, 
                                      train_loader=train_loader, test_loader=test_loader, optimizer=optimizer,
                                      loss_function=loss_function, id2tag=id2tag, timestamp=timestamp, best_vloss=best_vloss,
                                      num_classes=len(list(unique_tags)))
@@ -129,8 +129,8 @@ torch.save(model.state_dict(), configurations["save_model_path"])
 
 
 
-# import inference_cnnlstm
+# import inference_lstm
 # text = "من در ایران زندگی میکنم ولی شما چطور زندگی میکنید"
-# print(inference_cnnlstm.get_punc(text))
+# print(inference_lstm.get_punc(text))
 
 
