@@ -9,7 +9,7 @@
         "lstm_seq_max_len": 100,
         "EPOCHS": 10,
         "LEARNING_RATE": 0.001,
-        "use_cnn": "no",
+        "use_cnn": "yes",
 
         "include_paragraph_tag": "no",
         "save_model_path": "../../saved_models/LSTM/",
