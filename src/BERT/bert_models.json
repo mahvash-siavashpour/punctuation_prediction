@@ -135,7 +135,7 @@
     },
     "bert_8": {
         "model_name": "bert_8",
-        "model_architecture": "lstm",
+        "model_architecture": "bi-lstm",
         "dataset_name": "taaghche",
         "bert_model_name": "HooshvareLab/distilbert-fa-zwnj-base",
         "chunksize": 100,
