@@ -26,6 +26,8 @@ parser.add_argument('paragraph',
 
 parser.add_argument('dataset_name',
                     help='name of the dataset')
+parser.add_argument('has_paragraph',
+                    help='if paragraph should be considered')
 args = parser.parse_args()
 
 dataset_name = args.dataset_name
