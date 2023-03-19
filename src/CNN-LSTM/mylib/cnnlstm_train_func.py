@@ -9,31 +9,37 @@ from datasets import load_metric
 metric = load_metric("seqeval")
 
 class CNN_LSTM(nn.Module):
-    def __init__(self, input_size, hidden_size, num_layers, num_classes):
+    def __init__(self, input_size, hidden_size, num_layers, num_classes, use_cnn="yes"):
         super(CNN_LSTM, self).__init__()
 
-        self.cnn = nn.Sequential(
-            nn.Conv1d(in_channels=input_size, out_channels=64, kernel_size=5, stride=1, padding="same"),
-            nn.ReLU(),
-            # nn.MaxPool1d(kernel_size=2, stride=2),
-            nn.Conv1d(in_channels=64, out_channels=64, kernel_size=5, stride=1, padding="same", dilation=2),
-            nn.ReLU(),
-            # nn.MaxPool1d(kernel_size=2, stride=2)
-        )
-        self.lstm = nn.LSTM(input_size=64, hidden_size=hidden_size, num_layers=num_layers, batch_first=True)
+        self.use_cnn = use_cnn
+
+        if use_cnn == "yes":
+            self.cnn = nn.Sequential(
+                nn.Conv1d(in_channels=input_size, out_channels=64, kernel_size=5, stride=1, padding="same"),
+                nn.ReLU(),
+                # nn.MaxPool1d(kernel_size=2, stride=2),
+                nn.Conv1d(in_channels=64, out_channels=64, kernel_size=5, stride=1, padding="same", dilation=2),
+                nn.ReLU(),
+                # nn.MaxPool1d(kernel_size=2, stride=2)
+            )
+            self.lstm = nn.LSTM(input_size=64, hidden_size=hidden_size, num_layers=num_layers, batch_first=True)
+        else:
+            self.lstm = nn.LSTM(input_size=input_size, hidden_size=hidden_size, num_layers=num_layers, batch_first=True)
         self.fc = nn.Linear(hidden_size, num_classes)
 
     def forward(self, x):
 
         #cnn takes input of shape (batch_size, channels, seq_len)
         # print(x.shape)
-        
-        out = self.cnn(x)
-        # lstm takes input of shape (batch_size, seq_len, input_size)
-        out = out.permute(0, 2, 1)
-        # print(out.shape)
-        out, _ = self.lstm(out)
-
+        if self.use_cnn == "yes":
+            out = self.cnn(x)
+            # lstm takes input of shape (batch_size, seq_len, input_size)
+            out = out.permute(0, 2, 1)
+            # print(out.shape)
+            out, _ = self.lstm(out)
+        else:
+            out, _ = self.lstm(out)
         # print(out.shape)
 
         predictions  = self.fc(out)
