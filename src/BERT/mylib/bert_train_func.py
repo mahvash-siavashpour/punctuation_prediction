@@ -22,7 +22,7 @@ def loss_fct(weights):
 
 
 class CustomModel(nn.Module):
-    def __init__(self, num_classes, bert_model_name, hidden_dim=100, mlp_dim=100, dropout=0.1, loss_fct=nn.CrossEntropyLoss(), model_type='mlp'):
+    def __init__(self, num_classes, bert_model_name, hidden_dim=200, mlp_dim=100, dropout=0.1, loss_fct=nn.CrossEntropyLoss(), model_type='simple_classifier'):
         super(CustomModel,self).__init__() 
 
         self.num_labels = num_classes
@@ -40,8 +40,14 @@ class CustomModel(nn.Module):
         elif self.model_type == 'lstm':
             input_dim = 768
             n_layers = 1
-            self.lstm = nn.LSTM(input_dim, hidden_dim, n_layers, batch_first=True)
+            self.lstm = nn.LSTM(input_dim, hidden_dim, n_layers, batch_first=True, bidirectional=False)
             self.classifier = nn.Linear(mlp_dim, num_classes)
+
+        elif self.model_type == "bi-lstm":
+            input_dim = 768
+            n_layers = 1
+            self.lstm = nn.LSTM(input_dim, hidden_dim, n_layers, batch_first=True, bidirectional=True)
+            self.classifier = nn.Linear(hidden_dim*2, num_classes)
                                         
 
         elif self.model_type == 'mlp':
@@ -78,7 +84,7 @@ class CustomModel(nn.Module):
             logits = self.classifier(sequence_output) # calculate losses
         
         #LSTM
-        elif self.model_type == 'lstm':
+        elif self.model_type == 'lstm' or self.model_type == 'bi-lstm':
             
             logits, (hidden, cell) = self.lstm(sequence_output)
             logits = self.classifier(logits)        
