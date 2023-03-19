@@ -29,11 +29,6 @@ def SetModelConfig(model_name, models):
         print("Directory " , model_config['log_file_path']+"Inference/" ,  " already exists")
 
 
-    model_config['save_model_path'] = model_config['save_model_path'] + model_config['model_name'] +"_"+model_config['dataset_name'] 
-    model_config['log_file_path'] = model_config['log_file_path'] + model_config['model_name'] + "_"+model_config['dataset_name']  +".txt"
-    model_config['log_file_path_inference'] = model_config['log_file_path'] + "Inference/" + model_config['model_name'] +"_"+model_config['dataset_name']  +".txt"
-
-
     if model_config['dataset_name'] == "wiki":
         par = ""
         if model_config["include_paragraph_tag"] == "yes":
@@ -41,7 +36,7 @@ def SetModelConfig(model_name, models):
         model_config["raw_data_file_name"] = data_root+ "03_wiki_normalized_tokenized_word_neighbouring.txt"
         model_config["train_file_name"] = data_root+ 'Preprocessed/wiki/'+ par +'train_wiki.csv'
         model_config["test_file_name"] = data_root+ 'Preprocessed/wiki/'+ par +'test_wiki.csv'
-    
+
     elif model_config['dataset_name'] == "taaghche":
         par = ""
         if model_config["include_paragraph_tag"] == "yes":
@@ -51,6 +46,13 @@ def SetModelConfig(model_name, models):
         model_config["test_file_name"] = data_root+ 'Preprocessed/taaghche/'+par+'test_taaghche.csv'
 
 
+
+    model_config['save_model_path'] = model_config['save_model_path'] + model_config['model_name'] +"_"+par+model_config['dataset_name'] 
+    model_config['log_file_path'] = model_config['log_file_path'] + model_config['model_name'] + "_"+par+model_config['dataset_name']  +".txt"
+    model_config['log_file_path_inference'] = model_config['log_file_path'] + "Inference/" + model_config['model_name'] +"_"+par+model_config['dataset_name']  +".txt"
+
+
+ 
 
 
     if model_config["include_paragraph_tag"] == "no":
