@@ -57,8 +57,8 @@ elif dataset_name == "taaghche":
 
 
 
-train_file_name = 'Preprocessed/'+dataset_name+'/'+par+'train_taaghche.csv'
-test_file_name = 'Preprocessed/'+dataset_name+'/'+par+'test_taaghche.csv'
+train_file_name = 'Preprocessed/'+dataset_name+'/'+par+'train_'+dataset_name+'.csv'
+test_file_name = 'Preprocessed/'+dataset_name+'/'+par+'test_'+dataset_name+'.csv'
 
 """# Pre Processing
 

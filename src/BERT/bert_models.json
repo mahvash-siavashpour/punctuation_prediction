@@ -5,10 +5,10 @@
         "dataset_name": "wiki",
         "bert_model_name": "HooshvareLab/distilbert-fa-zwnj-base",
         "chunksize": 100,
-        "train_data_size":30000000,
-        "test_data_size":7000000,
+        "train_data_size":10000000,
+        "test_data_size":2500000,
         "bert_seq_max_len": 250,
-        "EPOCHS_classifier": 10,
+        "EPOCHS_classifier": 5,
         "EPOCHS_finetune": 10,
         "LEARNING_RATE": 3.5e-06,
 
