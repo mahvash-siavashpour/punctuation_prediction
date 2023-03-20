@@ -22,16 +22,19 @@ from transformers import AdamW
 import math
 from transformers import TrainingArguments
 
-def main():
+def main(has_args, config_name=None):
 
 
     metric = load_metric("seqeval")
 
-
-    parser = argparse.ArgumentParser(description='Makes Predition for Punctuation Marks')
-    parser.add_argument('model_name',
-                        help='Model Name')
-    args = parser.parse_args()
+    if has_args:
+        parser = argparse.ArgumentParser(description='Makes Predition for Punctuation Marks')
+        parser.add_argument('model_name',
+                            help='Model Name')
+        args = parser.parse_args()
+        config_name = args.model_name
+    else:
+        config_name = config_name
 
 
     ### read models configuration json file
@@ -42,7 +45,7 @@ def main():
 
 
 
-    configurations = config.SetModelConfig(args.model_name, models)
+    configurations = config.SetModelConfig(config_name, models)
 
     sys.stdout = open(configurations["log_file_path"], 'w', encoding="utf-8")
 

@@ -13,6 +13,6 @@ else:
     print(args.list)
     for ar in args.list:
         print(f"Running the {ar} config")
-        main_bert.main(ar)
+        main_bert.main(has_args=False, config_name=ar)
         print(f" ** {ar} config COMPLETE!")
 
