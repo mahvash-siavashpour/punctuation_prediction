@@ -93,6 +93,25 @@
         "fine_tune": "yes",
         "save_model_path": "../../saved_models/BERT/",
         "log_file_path": "../../logs/BERT/"
+    },
+    "bert_6": {
+        "model_name": "bert_6",
+        "model_architecture": "mlp",
+        "dataset_name": "wiki",
+        "bert_model_name": "HooshvareLab/distilbert-fa-zwnj-base",
+        "chunksize": 100,
+        "train_data_size":20000000,
+        "test_data_size":5000000,
+        "bert_seq_max_len": 250,
+        "EPOCHS_classifier": 10,
+        "EPOCHS_finetune": 20,
+        "LEARNING_RATE": 3.5e-06,
+
+        "include_paragraph_tag": "no",
+        "pre_tune": "yes",
+        "fine_tune": "yes",
+        "save_model_path": "../../saved_models/BERT/",
+        "log_file_path": "../../logs/BERT/"
     }
 
 }
