@@ -41,7 +41,7 @@ class CustomModel(nn.Module):
             input_dim = 768
             n_layers = 1
             self.lstm = nn.LSTM(input_dim, hidden_dim, n_layers, batch_first=True, bidirectional=False)
-            self.classifier = nn.Linear(mlp_dim, num_classes)
+            self.classifier = nn.Linear(hidden_dim, num_classes)
 
         elif self.model_type == "bi-lstm":
             input_dim = 768
