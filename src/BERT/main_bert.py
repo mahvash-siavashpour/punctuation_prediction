@@ -114,7 +114,7 @@ def main(has_args, config_name=None):
 
     # class_weights = torch.from_numpy(weights).float().to(device)
 
-    loss_fct = bert_train_func.loss_fct(weights=None)
+    loss_fct = bert_train_func.loss_fct(weights=weights)
 
     """## Defining Costume Model"""
 
