@@ -263,9 +263,12 @@ def main(has_args, config_name=None):
     performance_measure(true_labels, true_predictions)
     print(f"\n{performance_measure}\n")
     TP = performance_measure['TP']+performance_measure['TN']
+    TN = performance_measure['TN']
     FP=performance_measure['FP']
     FN=performance_measure['FN']
     f1 = TP/(TP+(.5*(FP+FN)))
+    f1_O = TN/(TN+(.5*(FP+FN)))
     print(f1)
+    print(f1_O)
 
 
