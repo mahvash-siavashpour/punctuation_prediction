@@ -21,6 +21,7 @@ from transformers import AutoTokenizer
 from transformers import AdamW
 import math
 from transformers import TrainingArguments
+from seqeval.metrics import performance_measure
 
 def main(has_args, config_name=None):
 
@@ -114,7 +115,7 @@ def main(has_args, config_name=None):
 
     # class_weights = torch.from_numpy(weights).float().to(device)
 
-    loss_fct = bert_train_func.loss_fct(weights=weights)
+    loss_fct = bert_train_func.loss_fct(weights=None)
 
     """## Defining Costume Model"""
 
@@ -258,6 +259,13 @@ def main(has_args, config_name=None):
     results = metric.compute(predictions=true_predictions, references=true_labels)
     print(f"**Testing Set Results** \n {results}")
 
-
+       
+    performance_measure(true_labels, true_predictions)
+    print(f"\n{performance_measure}\n")
+    TP = performance_measure['TP']+performance_measure['TN']
+    FP=performance_measure['FP']
+    FN=performance_measure['FN']
+    f1 = TP/(TP+(.5*(FP+FN)))
+    print(f1)
 
 
