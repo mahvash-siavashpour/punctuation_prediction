@@ -4,6 +4,7 @@ from torch import nn
 import numpy as np
 from datetime import datetime
 
+from seqeval.metrics import performance_measure
 
 from datasets import load_metric
 metric = load_metric("seqeval")
@@ -108,7 +109,7 @@ def train_one_epoch(epoch_index, tb_writer, train_loader, optimizer, model, loss
             ave_f1 += f1
             # f1 = 0
             last_loss = running_loss / 1000 # loss per batch
-            print(f'  batch {i + 1} loss: {last_loss} f1-score: {f1}')
+            # print(f'  batch {i + 1} loss: {last_loss} f1-score: {f1}')
             tb_x = epoch_index * len(train_loader) + i + 1
             tb_writer.add_scalar('Loss/train', last_loss, tb_x)
             running_loss = 0.
@@ -169,8 +170,19 @@ def train(epochs, model, writer, train_loader, test_loader, optimizer, loss_func
         # f1 = f1_score(y_true=new_vlabels.reshape(-1), y_pred=new_voutputs.reshape(-1), average='macro') 
 
         avg_vloss = running_vloss / (i + 1)
+
+        pm = performance_measure(accumulated_vlabels, accumulated_voutputs)
+        print(f"\n{pm}\n")
+        TP = pm['TP']+pm['TN']
+        TN = pm['TN']
+        FP=pm['FP']
+        FN=pm['FN']
+        f1 = TP/(TP+(.5*(FP+FN)))
+        f1_O = TN/(TN+(.5*(FP+FN)))
     
-        print(f'LOSS train {avg_loss} valid {avg_vloss} \n ***Test metrics*** {results}')
+        print(f'LOSS=> train {avg_loss} valid {avg_vloss} \n ***Test metrics*** {results}')
+        print(f"overall f1 with TN: {f1}")
+        print(f"O f1: {f1_O}")
 
         # Log the running loss averaged per batch
         # for both training and validation

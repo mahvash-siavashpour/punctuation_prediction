@@ -129,6 +129,40 @@ def main(has_args, config_name=None):
     torch.save(model.state_dict(), configurations["save_model_path"])
 
 
+    voutputs = model(test_loader)
+    #prediction on test set
+    predictions, labels, _ = trainer.predict(testing_set)
+    predictions = np.argmax(predictions, axis=2)
+
+
+
+    # Remove ignored index (special tokens)
+    true_predictions = [
+        [id2tag[p] for (p, l) in zip(prediction, label) if l != -100]
+        for prediction, label in zip(predictions, labels)
+    ]
+    true_labels = [
+        [id2tag[l] for (p, l) in zip(prediction, label) if l != -100]
+        for prediction, label in zip(predictions, labels)
+    ]
+
+    print()
+    results = metric.compute(predictions=true_predictions, references=true_labels)
+    print(f"**Testing Set Results** \n {results}")
+
+       
+    pm = performance_measure(true_labels, true_predictions)
+    print(f"\n{pm}\n")
+    TP = pm['TP']+pm['TN']
+    TN = pm['TN']
+    FP=pm['FP']
+    FN=pm['FN']
+    f1 = TP/(TP+(.5*(FP+FN)))
+    f1_O = TN/(TN+(.5*(FP+FN)))
+    print(f"overall f1 with TN: {f1}")
+    print(f"O f1: {f1_O}")
+
+
 
     # import inference_lstm
     # text = "من در ایران زندگی میکنم ولی شما چطور زندگی میکنید"

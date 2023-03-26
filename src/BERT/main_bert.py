@@ -106,11 +106,11 @@ def main(has_args, config_name=None):
     training_loader = torch.utils.data.DataLoader(training_set, **train_params)
     testing_loader = torch.utils.data.DataLoader(testing_set, **test_params)
 
-    """## Loss Scheme"""
-    label_count = dataload_func.label_counts(id2tag, training_loader)
-    print(f"number of each labels: \n {label_count}")
-    weights = dataload_func.loss_weights(label_count)
-    print(f"weigh of each label: {weights}")
+    # """## Loss Scheme"""
+    # label_count = dataload_func.label_counts(id2tag, training_loader)
+    # print(f"number of each labels: \n {label_count}")
+    # weights = dataload_func.loss_weights(label_count)
+    # print(f"weigh of each label: {weights}")
 
 
     # class_weights = torch.from_numpy(weights).float().to(device)
@@ -268,7 +268,7 @@ def main(has_args, config_name=None):
     FN=pm['FN']
     f1 = TP/(TP+(.5*(FP+FN)))
     f1_O = TN/(TN+(.5*(FP+FN)))
-    print(f1)
-    print(f1_O)
+    print(f"overall f1 with TN: {f1}")
+    print(f"O f1: {f1_O}")
 
 
