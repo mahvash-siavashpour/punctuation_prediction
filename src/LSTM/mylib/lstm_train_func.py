@@ -10,7 +10,7 @@ from datasets import load_metric
 metric = load_metric("seqeval")
 
 class LSTM_Model(nn.Module):
-    def __init__(self, input_size, hidden_size, num_layers, num_classes, use_cnn):
+    def __init__(self, input_size, hidden_size, num_layers, num_classes, use_cnn, dropout=0.1):
         super(LSTM_Model, self).__init__()
 
         self.use_cnn = use_cnn
@@ -24,8 +24,10 @@ class LSTM_Model(nn.Module):
                 nn.ReLU(),
                 # nn.MaxPool1d(kernel_size=2, stride=2)
             )
+            self.dropout = nn.Dropout(dropout) 
             self.lstm = nn.LSTM(input_size=64, hidden_size=hidden_size, num_layers=num_layers, batch_first=True)
         else:
+            self.dropout = nn.Dropout(dropout) 
             self.lstm = nn.LSTM(input_size=input_size, hidden_size=hidden_size, num_layers=num_layers, batch_first=True)
         self.fc = nn.Linear(hidden_size, num_classes)
 
@@ -35,12 +37,14 @@ class LSTM_Model(nn.Module):
         # print(x.shape)
         if self.use_cnn == "yes":
             out = self.cnn(x)
+            out = self.dropout(out) #
             # lstm takes input of shape (batch_size, seq_len, input_size)
             out = out.permute(0, 2, 1)
             # print(out.shape)
             out, _ = self.lstm(out)
         else:
             x = x.permute(0, 2, 1)
+            x = self.dropout(x)
             out, _ = self.lstm(x)
         # print(out.shape)
 
