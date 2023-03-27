@@ -78,7 +78,7 @@ class CustomModel(nn.Module):
         #Add custom layers
 
         # classifier
-        sequence_output = self.dropout(output[0]) #outputs[0]=last hidden state
+            
 
         if self.model_type == 'simple_classifier':
             logits = self.classifier(sequence_output) # calculate losses
