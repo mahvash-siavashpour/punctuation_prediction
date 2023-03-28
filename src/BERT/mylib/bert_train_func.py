@@ -81,18 +81,18 @@ class CustomModel(nn.Module):
             
 
         if self.model_type == 'simple_classifier':
-            logits = self.classifier(sequence_output) # calculate losses
+            logits = self.classifier(output) # calculate losses
         
         #LSTM
         elif self.model_type == 'lstm' or self.model_type == 'bi-lstm':
             
-            logits, (hidden, cell) = self.lstm(sequence_output)
+            logits, (hidden, cell) = self.lstm(output)
             logits = self.classifier(logits)        
 
 
         # mlp
         elif self.model_type == 'mlp':
-            logits = self.mlp(sequence_output)
+            logits = self.mlp(output)
 
 
         
