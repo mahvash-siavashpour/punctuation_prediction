@@ -77,22 +77,21 @@ class CustomModel(nn.Module):
 
         #Add custom layers
 
-        # classifier
-            
+        sequence_output = self.dropout(output[0]) #outputs[0]=last hidden state
 
         if self.model_type == 'simple_classifier':
-            logits = self.classifier(output) # calculate losses
+            logits = self.classifier(sequence_output) # calculate losses
         
         #LSTM
         elif self.model_type == 'lstm' or self.model_type == 'bi-lstm':
             
-            logits, (hidden, cell) = self.lstm(output)
+            logits, (hidden, cell) = self.lstm(sequence_output)
             logits = self.classifier(logits)        
 
 
         # mlp
         elif self.model_type == 'mlp':
-            logits = self.mlp(output)
+            logits = self.mlp(sequence_output)
 
 
         
