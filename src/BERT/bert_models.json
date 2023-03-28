@@ -143,7 +143,7 @@
         "bert_seq_max_len": 250,
         "EPOCHS_classifier": 5,
         "EPOCHS_finetune": 15,
-        "LEARNING_RATE": 3.5e-05,
+        "LEARNING_RATE": 3e-05,
 
         "include_paragraph_tag": "no",
         "pre_tune": "yes",
@@ -162,7 +162,7 @@
         "bert_seq_max_len": 250,
         "EPOCHS_classifier": 5,
         "EPOCHS_finetune": 15,
-        "LEARNING_RATE": 3.5e-05,
+        "LEARNING_RATE": 3e-05,
 
         "include_paragraph_tag": "no",
         "pre_tune": "yes",
@@ -181,7 +181,7 @@
         "bert_seq_max_len": 250,
         "EPOCHS_classifier": 5,
         "EPOCHS_finetune": 15,
-        "LEARNING_RATE": 3.5e-05,
+        "LEARNING_RATE": 3e-05,
 
         "include_paragraph_tag": "no",
         "pre_tune": "yes",
@@ -200,7 +200,7 @@
         "bert_seq_max_len": 250,
         "EPOCHS_classifier": 5,
         "EPOCHS_finetune": 15,
-        "LEARNING_RATE": 3.5e-05,
+        "LEARNING_RATE": 3e-05,
 
         "include_paragraph_tag": "no",
         "pre_tune": "yes",
@@ -219,7 +219,7 @@
         "bert_seq_max_len": 250,
         "EPOCHS_classifier": 5,
         "EPOCHS_finetune": 15,
-        "LEARNING_RATE": 3.5e-05,
+        "LEARNING_RATE": 3e-05,
 
         "include_paragraph_tag": "yes",
         "pre_tune": "yes",
@@ -238,7 +238,7 @@
         "bert_seq_max_len": 250,
         "EPOCHS_classifier": 5,
         "EPOCHS_finetune": 15,
-        "LEARNING_RATE": 3.5e-05,
+        "LEARNING_RATE": 3e-05,
 
         "include_paragraph_tag": "no",
         "pre_tune": "yes",
