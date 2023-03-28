@@ -168,8 +168,8 @@ def main(has_args, config_name=None):
             warmup_steps=300,                # number of warmup steps for learning rate scheduler
             weight_decay=0.01,               # strength of weight decay
             logging_dir='./logs',            # directory for storing logs
-            logging_steps=1000,
-            save_steps = 10000,
+            logging_steps=10000,
+            save_steps = 20000,
             evaluation_strategy="epoch"
         )
 
@@ -202,8 +202,8 @@ def main(has_args, config_name=None):
             warmup_steps=300,                # number of warmup steps for learning rate scheduler
             weight_decay=0.01,               # strength of weight decay
             logging_dir='./logs',            # directory for storing logs
-            logging_steps=1000,
-            save_steps = 10000,
+            logging_steps=10000,
+            save_steps = 50000,
             evaluation_strategy="epoch"
         )
 
