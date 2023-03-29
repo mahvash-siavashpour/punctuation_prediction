@@ -142,7 +142,7 @@
         "test_data_size": 12500000,
         "bert_seq_max_len": 250,
         "EPOCHS_classifier": 5,
-        "EPOCHS_finetune": 15,
+        "EPOCHS_finetune": 5,
         "LEARNING_RATE": 3e-05,
 
         "include_paragraph_tag": "no",
@@ -238,6 +238,25 @@
         "bert_seq_max_len": 250,
         "EPOCHS_classifier": 5,
         "EPOCHS_finetune": 15,
+        "LEARNING_RATE": 3e-05,
+
+        "include_paragraph_tag": "no",
+        "pre_tune": "yes",
+        "fine_tune": "yes",
+        "save_model_path": "../../saved_models/BERT/",
+        "log_file_path": "../../logs/BERT/"
+    },
+    "bert_test": {
+        "model_name": "bert_test",
+        "model_architecture": "mlp",
+        "dataset_name": "wiki",
+        "bert_model_name": "HooshvareLab/distilbert-fa-zwnj-base",
+        "chunksize": 100,
+        "train_data_size":1000000000,
+        "test_data_size": 1000000000,
+        "bert_seq_max_len": 250,
+        "EPOCHS_classifier": 5,
+        "EPOCHS_finetune": 7,
         "LEARNING_RATE": 3e-05,
 
         "include_paragraph_tag": "no",

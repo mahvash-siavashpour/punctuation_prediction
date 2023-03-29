@@ -41,12 +41,14 @@ class CustomModel(nn.Module):
             input_dim = 768
             n_layers = 1
             self.lstm = nn.LSTM(input_dim, hidden_dim, n_layers, batch_first=True, bidirectional=False)
+            self.dropout = nn.Dropout(dropout) 
             self.classifier = nn.Linear(hidden_dim, num_classes)
 
         elif self.model_type == "bi-lstm":
             input_dim = 768
             n_layers = 1
             self.lstm = nn.LSTM(input_dim, hidden_dim, n_layers, batch_first=True, bidirectional=True)
+            self.dropout = nn.Dropout(dropout) 
             self.classifier = nn.Linear(hidden_dim*2, num_classes)
                                         
 
@@ -54,6 +56,7 @@ class CustomModel(nn.Module):
             input_dim = 768
             self.mlp = nn.Sequential(
                 nn.Linear(input_dim, mlp_dim),
+                nn.Dropout(dropout),
                 nn.ReLU(),
                 nn.Linear(mlp_dim, mlp_dim),
                 nn.ReLU(),            
@@ -86,6 +89,7 @@ class CustomModel(nn.Module):
         elif self.model_type == 'lstm' or self.model_type == 'bi-lstm':
             
             logits, (hidden, cell) = self.lstm(sequence_output)
+            logits = self.dropout(logits)
             logits = self.classifier(logits)        
 
 
