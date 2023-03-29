@@ -35,7 +35,6 @@ def SetModelConfig(model_name, models):
         par = ""
         if model_config["include_paragraph_tag"] == "yes":
             par = "paragraph_"
-        model_config["raw_data_file_name"] = data_root+ "03_wiki_normalized_tokenized_word_neighbouring.txt"
         model_config["train_file_name"] = data_root+ 'Preprocessed/wiki/'+ par +'train_wiki.csv'
         model_config["test_file_name"] = data_root+ 'Preprocessed/wiki/'+ par +'test_wiki.csv'
 
@@ -43,7 +42,6 @@ def SetModelConfig(model_name, models):
         par = ""
         if model_config["include_paragraph_tag"] == "yes":
             par = "paragraph_"
-        model_config["raw_data_file_name"] = data_root+ '07_taaghche_v2_normalized_tokenized_word_neighbouring_head200K.txt'
         model_config["train_file_name"] = data_root+ 'Preprocessed/taaghche/'+ par+'train_taaghche.csv'
         model_config["test_file_name"] = data_root+ 'Preprocessed/taaghche/'+par+'test_taaghche.csv'
 
