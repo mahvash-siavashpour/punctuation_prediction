@@ -21,7 +21,7 @@ import json
 import sys
 
 from torch.utils.data import DataLoader
-from torch.optim import Adam
+from torch.optim import AdamW
 
 from torch.utils.tensorboard import SummaryWriter
 from datetime import datetime
@@ -103,9 +103,9 @@ def main(has_args, config_name=None):
 
     # from sklearn.metrics import f1_score   
 
-    optimizer = Adam(model.parameters(), lr=configurations["LEARNING_RATE"])
-    # weight=torch.from_numpy(weights).float()
-    loss_function = nn.CrossEntropyLoss()
+    optimizer = AdamW(model.parameters(), lr=configurations["LEARNING_RATE"])
+    
+    loss_function = nn.CrossEntropyLoss(weight=torch.from_numpy(weights).float())
 
 
     
