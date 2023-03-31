@@ -94,7 +94,25 @@
         "save_model_path": "../../saved_models/BERT/",
         "log_file_path": "../../logs/BERT/"
     },
-    
+    "bert_1.6": {
+        "model_name": "bert_1.6",
+        "model_architecture": "bi-lstm",
+        "dataset_name": "taaghche",
+        "bert_model_name": "HooshvareLab/bert-fa-zwnj-base",
+        "chunksize": 100,
+        "train_data_size":50000000,
+        "test_data_size": 12500000,
+        "bert_seq_max_len": 250,
+        "EPOCHS_classifier": 5,
+        "EPOCHS_finetune": 4,
+        "LEARNING_RATE": 3e-05,
+
+        "include_paragraph_tag": "no",
+        "pre_tune": "yes",
+        "fine_tune": "yes",
+        "save_model_path": "../../saved_models/BERT/",
+        "log_file_path": "../../logs/BERT/"
+    },
     "bert_2.1": {
         "model_name": "bert_2.1",
         "model_architecture": "mlp",
@@ -190,6 +208,7 @@
         "save_model_path": "../../saved_models/BERT/",
         "log_file_path": "../../logs/BERT/"
     },
+    
     "bert_2.6": {
         "model_name": "bert_2.6",
         "model_architecture": "bi-lstm",
