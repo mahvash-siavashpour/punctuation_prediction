@@ -56,7 +56,7 @@ class LSTM_Model(nn.Module):
 
 
 
-def train_one_epoch(epoch_index, tb_writer, train_loader, optimizer, model, loss_function, id2tag, num_classes):
+def train_one_epoch(epoch_index, train_loader, optimizer, model, loss_function, id2tag, num_classes):
     running_loss = 0.
     last_loss = 0.
     ave_f1 = 0
@@ -115,7 +115,7 @@ def train_one_epoch(epoch_index, tb_writer, train_loader, optimizer, model, loss
             last_loss = running_loss / 1000 # loss per batch
             # print(f'  batch {i + 1} loss: {last_loss} f1-score: {f1}')
             tb_x = epoch_index * len(train_loader) + i + 1
-            tb_writer.add_scalar('Loss/train', last_loss, tb_x)
+            print(f"Loss/train {last_loss, tb_x} ")
             running_loss = 0.
             cnt += 1
 
