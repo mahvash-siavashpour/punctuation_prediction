@@ -94,9 +94,13 @@ def main(has_args, config_name=None):
 
 
     """## Loss Scheme"""
-    label_count, total_labels = dataload_func.label_counts(id2tag, train_loader)
-    print(f"number of each labels: \n {label_count}")
-    weights = dataload_func.loss_weights(label_count, total_labels)
+    train_label_count, train_total_labels = dataload_func.label_counts(id2tag, train_loader)
+    test_label_count, test_total_labels = dataload_func.label_counts(id2tag, test_loader)
+    print(f"TRAIN number of each labels train: \n {train_label_count}")
+    print(f"TEST number of each labels train: \n {test_label_count}")
+
+
+    weights = dataload_func.loss_weights(train_label_count, train_total_labels)
     print(f"weigh of each label: {weights}")
 
 
