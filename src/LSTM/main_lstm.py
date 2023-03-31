@@ -111,7 +111,6 @@ def main(has_args, config_name=None):
 
     # Initializing in a separate cell so we can easily add more epochs to the same run
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    writer = SummaryWriter('runs/fashion_trainer_{}'.format(timestamp))
 
     EPOCHS = configurations["EPOCHS"]
     best_vloss = 1_000_000.

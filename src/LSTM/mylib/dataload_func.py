@@ -110,10 +110,10 @@ def loss_weights(label_count):
         # print(f"{label_frq[i]/total_labels},   {np.log(label_frq[i])/np.log(total_labels)}")
         # print()
         # w = 1 - total_labels/label_count[i]
-        # w =  np.sqrt(total_labels/label_count[i])
+        w =  np.sqrt(total_labels/label_count[i])
         # w = np.sqrt(1/label_count[i])
-        b = 0.9
-        w = 1/((1- b**np.log(label_count[i]))/(1-b))
+        # b = 0.9
+        # w = 1/((1- b**np.log(label_count[i]))/(1-b))
         weights.append(w)
         # print(w)
 

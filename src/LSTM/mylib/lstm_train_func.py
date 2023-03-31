@@ -184,7 +184,7 @@ def train(epochs, model, writer, train_loader, test_loader, optimizer, loss_func
         f1 = TP/(TP+(.5*(FP+FN)))
         f1_O = TN/(TN+(.5*(FP+FN)))
     
-        print(f'LOSS=> train {avg_loss} valid {avg_vloss} \n ***Test metrics*** {results}')
+        print(f'LOSS=> train {avg_loss} valid {avg_vloss} \n ***Test metrics overall f1:{results["overall_f1"]}')
         print(f"overall f1 with TN: {f1}")
         print(f"O f1: {f1_O}")
 
@@ -198,8 +198,6 @@ def train(epochs, model, writer, train_loader, test_loader, optimizer, loss_func
         # Track best performance, and save the model's state
         if avg_vloss < best_vloss:
             best_vloss = avg_vloss
-            model_path = 'model_{}_{}'.format(timestamp, epoch)
-            torch.save(model.state_dict(), model_path)
 
     
     return model
