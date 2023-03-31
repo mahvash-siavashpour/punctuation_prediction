@@ -100,11 +100,11 @@ def label_counts(id2tag, train_loader):
         label_count[str(int(e))] += 1
         total_labels += 1
 
-  return label_count
+  return label_count, total_labels
 
 
 
-def loss_weights(label_count):
+def loss_weights(label_count, total_labels):
     weights = []
     for i in label_count.keys():
         # print(f"{label_frq[i]/total_labels},   {np.log(label_frq[i])/np.log(total_labels)}")

@@ -107,12 +107,12 @@ def main(has_args, config_name=None):
     testing_loader = torch.utils.data.DataLoader(testing_set, **test_params)
 
     # """## Loss Scheme"""
-    train_label_count = dataload_func.label_counts(id2tag, training_loader)
+    train_label_count, total_labels = dataload_func.label_counts(id2tag, training_loader)
     print(f"number of each labels: \n {train_label_count}")
 
-    test_label_count = dataload_func.label_counts(id2tag, testing_loader)
+    test_label_count, total_labels= dataload_func.label_counts(id2tag, testing_loader)
     print(f"number of each labels: \n {test_label_count}")
-    # weights = dataload_func.loss_weights(label_count)
+    # weights = dataload_func.loss_weights(label_count, total_labels)
     # print(f"weigh of each label: {weights}")
 
 

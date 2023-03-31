@@ -115,7 +115,7 @@ def label_counts(id2tag, training_loader):
     return label_count
 
 
-def loss_weights(label_count):
+def loss_weights(label_count, total_labels):
     weights = []
     for i in label_count.keys():
         # print(f"{label_frq[i]/total_labels},   {np.log(label_frq[i])/np.log(total_labels)}")
