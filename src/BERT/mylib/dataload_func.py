@@ -112,7 +112,7 @@ def label_counts(id2tag, training_loader):
                 label_count[str(int(e))] += 1
                 total_labels += 1
 
-    return label_count
+    return label_count, total_labels
 
 
 def loss_weights(label_count, total_labels):
