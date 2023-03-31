@@ -129,7 +129,7 @@ def train_one_epoch(epoch_index, tb_writer, train_loader, optimizer, model, loss
 
 
 
-def train(epochs, model, writer, train_loader, test_loader, optimizer, loss_function, id2tag, timestamp, best_vloss, num_classes):
+def train(epochs, model, train_loader, test_loader, optimizer, loss_function, id2tag, timestamp, best_vloss, num_classes):
     
 
     for epoch in range(epochs):
@@ -137,7 +137,7 @@ def train(epochs, model, writer, train_loader, test_loader, optimizer, loss_func
 
         # Make sure gradient tracking is on, and do a pass over the data
         model.train(True)
-        avg_loss, avg_f1 = train_one_epoch(epoch, writer, train_loader, optimizer, model, loss_function, id2tag, num_classes)
+        avg_loss, avg_f1 = train_one_epoch(epoch, train_loader, optimizer, model, loss_function, id2tag, num_classes)
         print(f"Average F1: {avg_f1}")
 
         # We don't need gradients on to do reporting
@@ -188,12 +188,7 @@ def train(epochs, model, writer, train_loader, test_loader, optimizer, loss_func
         print(f"overall f1 with TN: {f1}")
         print(f"O f1: {f1_O}")
 
-        # Log the running loss averaged per batch
-        # for both training and validation
-        writer.add_scalars('Training vs. Validation Loss',
-                        { 'Training' : avg_loss, 'Validation' : avg_vloss },
-                        epoch)
-        writer.flush()
+   
 
         # Track best performance, and save the model's state
         if avg_vloss < best_vloss:
