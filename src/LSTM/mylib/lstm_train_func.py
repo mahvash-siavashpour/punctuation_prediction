@@ -185,6 +185,8 @@ def train(epochs, model, train_loader, test_loader, optimizer, loss_function, id
         f1_O = TN/(TN+(.5*(FP+FN)))
     
         print(f'LOSS=> train {avg_loss} valid {avg_vloss} \n ***Test metrics overall f1:{results["overall_f1"]}')
+        if epoch == epochs - 1:
+            print(results)
         print(f"overall f1 with TN: {f1}")
         print(f"O f1: {f1_O}")
 
