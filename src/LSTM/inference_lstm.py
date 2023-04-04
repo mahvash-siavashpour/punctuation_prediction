@@ -77,7 +77,6 @@ def lstm_get_punc(text, splitted=False):
     out = model(X)
     out = out.detach().numpy()
     new_outputs = np.argmax(out, axis=2)
-    print(new_outputs.shape)
 
     result = []
     for o, t in zip(new_outputs[0], text):
