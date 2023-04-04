@@ -50,17 +50,18 @@ def lstm_get_punc(text, model_name, splitted=False):
     x_prepared = dataload_func.get_embedding(text, fasttext_model)
 
     X = torch.from_numpy(x_prepared).float()
-    print(X.shape)
-    # X = X.reshape(1, 300, 10)
-    # out = model(X)
-    # out = out.detach().numpy()
-    # new_outputs = np.argmax(out, axis=2)
+    # print(X.shape)
+    X = X.reshape(1, 300, X.shape[0])
+    out = model(X)
+    out = out.detach().numpy()
+    new_outputs = np.argmax(out, axis=2)
+    print(new_outputs.shape)
 
-    # result = []
-    # for o, t in zip(new_outputs[0], text):
-    #     result.appen  d((t, id2tag[o]))
+    result = []
+    for o, t in zip(new_outputs[0], text):
+        result.append((t, id2tag[o]))
 
-    # return result
+    return result
 
 
 text = "من در ایران زندگی میکنم ولی شما چطور زندگی میکنید"
