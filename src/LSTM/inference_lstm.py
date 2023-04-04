@@ -39,7 +39,7 @@ def lstm_get_punc(text, model_name, splitted=False):
                                        num_layers=1, num_classes=len(list(unique_tags)),
                                        use_cnn=configurations['use_cnn'])
 
-    model.load_state_dict(torch.load("models/LSTM/"+configurations["save_model_name"], map_location=torch.device('cpu')))
+    model.load_state_dict(torch.load(configurations["save_model_path"]))
     model.eval()
 
     if not splitted:
