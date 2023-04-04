@@ -25,7 +25,7 @@ args = parser.parse_args()
 
 
 def lstm_get_punc(text, model_name, splitted=False):
-    with open("lstm_modelsjson") as f:
+    with open("lstm_models.json") as f:
         models = json.load(f)
 
     configurations = config.SetModelConfig(model_name, models)
