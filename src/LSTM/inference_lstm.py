@@ -11,8 +11,8 @@ import sys
 import torch
 import numpy as np
 import json
-# import fasttext
-from gensim.models import fasttext
+import fasttext
+# from gensim.models import fasttext
 
 from mylib import config, lstm_train_func, dataload_func
 
@@ -45,8 +45,8 @@ def lstm_get_punc(text, model_name, splitted=False):
     if not splitted:
         text = text.split()
 
-    # fasttext_model = fasttext.load_model('ml_scripts/LSTM/word-embeddings/cc.fa.300.bin')
-    fasttext_model = fasttext.load_facebook_model('word-embeddings/cc.fa.300.bin', encoding='utf-8')
+    fasttext_model = fasttext.load_model('word-embeddings/cc.fa.300.bin')
+    # fasttext_model = fasttext.load_facebook_model('word-embeddings/cc.fa.300.bin', encoding='utf-8')
     x_prepared = dataload_func.get_embedding(text, fasttext_model)
 
     X = torch.from_numpy(x_prepared).float()
