@@ -8,62 +8,56 @@ import json
 import sys
 
 
-from datasets import load_metric
-metric = load_metric("seqeval")
+import torch
+import numpy as np
+import json
+# import fasttext
+from gensim.models import fasttext
 
-from mylib import bert_train_func
-from mylib import config
-
-parser = argparse.ArgumentParser(description='Makes Predition for Punctuation Marks')
-parser.add_argument('model_name',
-                    help='Model Name')
-args = parser.parse_args()
+from mylib import config, lstm_train_func, dataload_func
 
 
-### read models configuration json file
-with open("lstm_models.json") as f:
-    models = json.load(f)
-    models_name = list(models.keys())
+def lstm_get_punc(text, model_name, splitted=False):
+    with open("ml_scripts/config.json") as f:
+        models = json.load(f)
 
+    configurations = config.SetModelConfig(model_name, models)
 
+    unique_tags = configurations["unique_tags"]
+    tag2id = configurations["tag2id"]
+    id2tag = configurations["id2tag"]
 
-configurations = config.SetModelConfig(args.model_name, models)
+    model = lstm_train_func.LSTM_Model(input_size=configurations['input_size'],
+                                       hidden_size=configurations['lstm_hidden_size'],
+                                       num_layers=1, num_classes=len(list(unique_tags)),
+                                       use_cnn=configurations['use_cnn'])
 
-sys.stdout = open(configurations["log_file_path_inference"], 'w', encoding="utf-8")
+    model.load_state_dict(torch.load("models/LSTM/"+configurations["save_model_name"], map_location=torch.device('cpu')))
+    model.eval()
 
+    if not splitted:
+        text = text.split()
 
-unique_tags = configurations["unique_tags"]
-tag2id = configurations["tag2id"]
-id2tag = configurations["id2tag"]
+    # fasttext_model = fasttext.load_model('ml_scripts/LSTM/word-embeddings/cc.fa.300.bin')
+    fasttext_model = fasttext.load_facebook_model('ml_scripts/LSTM/word-embeddings/cc.fa.300.bin', encoding='utf-8')
+    x_prepared = dataload_func.get_embedding(text, fasttext_model)
 
+    X = torch.from_numpy(x_prepared).float()
+    print(X.shape)
+    # X = X.reshape(1, 300, 10)
+    # out = model(X)
+    # out = out.detach().numpy()
+    # new_outputs = np.argmax(out, axis=2)
 
-model = lstm_train_func.LSTM_Model(input_size=configurations['input_size'], hidden_size=configurations['lstm_hidden_size'], 
-                                    num_layers=1, num_classes=len(list(unique_tags)), use_cnn=configurations['use_cnn'])
+    # result = []
+    # for o, t in zip(new_outputs[0], text):
+    #     result.append((t, id2tag[o]))
 
-
-model.load_state_dict(torch.load(configurations["save_model_path"]))
-model.eval()
-
-print(model)
-
-
-def get_punc(text, splitted=False):
-  if not splitted:
-    text = text.split()
-  x_prepared = dataload_func.get_embedding(text)
-
-  X = torch.from_numpy(x_prepared).float()
-  X = X.reshape(1, 300, 10)
-  out = model(X)
-  out = out.detach().numpy()
-  new_outputs = np.argmax(out,axis=2)
-
-  result = []
-  for o, t in zip(new_outputs[0], text):
-    result.append((t, id2tag[o]))
-
-  return result
+    # return result
 
 
 text = "من در ایران زندگی میکنم ولی شما چطور زندگی میکنید"
-print(get_punc(text))
+print(lstm_get_punc(text))
+
+text2 = "جشن باستانی نوروز ایرانی پیشینه جالب و خواندنی‌ای دارد با کمک روایت‌های فردوسی حکیم در شاهنامه می‌توانیم داستان نوروز را بفهمیم ماجرا از این قرار است که در تمام کتاب‌های تاریخی از جمله شاهنامه فردوسی در کنار نوروز نام جمشید آمده است همه این روز را به زمان پادشاهی او نسبت داده‌اند و او را پایه‌گذار جشن نوروز می‌دانند اعتقاد بر این است که نوروز چون همزمان با آمدن فصل بهار و تولد دوباره طبیعت است انسان هم در این روز تولدی دوباره می‌یابد و به‌عنوان جزیی از هستی و عالم آفرینش مانند وجودی تازه متولد شده بی‌گناه و پاکیزه است تاریخچه و آداب و رسوم عید نوروز این روز در ایران و افغانستان نوید‌ دهنده سال جدید است "
+print(lstm_get_punc(text2))
