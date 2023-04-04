@@ -61,7 +61,7 @@ chunksize = configurations["chunksize"]
 loss_fct = bert_train_func.loss_fct(weights=None)
 
 
-model = bert_train_func.CustomModel(num_classes=5, checkpoint= bert_model_name, loss_fct=loss_fct, bert_model_name=bert_model_name)
+model = bert_train_func.CustomModel(num_classes=len(list(unique_tags)), loss_fct=loss_fct, bert_model_name=bert_model_name, model_type=configurations["model_architecture"])
 
 
 model.load_state_dict(torch.load(configurations["save_model_path"]))
