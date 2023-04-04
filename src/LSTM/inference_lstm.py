@@ -17,6 +17,13 @@ from gensim.models import fasttext
 from mylib import config, lstm_train_func, dataload_func
 
 
+parser = argparse.ArgumentParser(description='Makes Predition for Punctuation Marks')
+parser.add_argument('model_name',
+                    help='Model Name')
+
+args = parser.parse_args()
+
+
 def lstm_get_punc(text, model_name, splitted=False):
     with open("ml_scripts/config.json") as f:
         models = json.load(f)
@@ -51,13 +58,13 @@ def lstm_get_punc(text, model_name, splitted=False):
 
     # result = []
     # for o, t in zip(new_outputs[0], text):
-    #     result.append((t, id2tag[o]))
+    #     result.appen  d((t, id2tag[o]))
 
     # return result
 
 
 text = "من در ایران زندگی میکنم ولی شما چطور زندگی میکنید"
-print(lstm_get_punc(text))
+print(lstm_get_punc(text, args.model_name))
 
 text2 = "جشن باستانی نوروز ایرانی پیشینه جالب و خواندنی‌ای دارد با کمک روایت‌های فردوسی حکیم در شاهنامه می‌توانیم داستان نوروز را بفهمیم ماجرا از این قرار است که در تمام کتاب‌های تاریخی از جمله شاهنامه فردوسی در کنار نوروز نام جمشید آمده است همه این روز را به زمان پادشاهی او نسبت داده‌اند و او را پایه‌گذار جشن نوروز می‌دانند اعتقاد بر این است که نوروز چون همزمان با آمدن فصل بهار و تولد دوباره طبیعت است انسان هم در این روز تولدی دوباره می‌یابد و به‌عنوان جزیی از هستی و عالم آفرینش مانند وجودی تازه متولد شده بی‌گناه و پاکیزه است تاریخچه و آداب و رسوم عید نوروز این روز در ایران و افغانستان نوید‌ دهنده سال جدید است "
-print(lstm_get_punc(text2))
+print(lstm_get_punc(text2, args.model_name))
