@@ -23,6 +23,23 @@ parser.add_argument('model_name',
 
 args = parser.parse_args()
 
+def insert_punc(output):
+    result = []
+
+    for (token, tag) in output[0]:
+        result.append(token)
+        if tag == 'I-comma':
+            result.append("،")
+        elif tag == 'I-dot':
+            result.append(".")
+        elif tag == 'I-qMark':
+            result.append("؟")
+        elif tag == 'I-exMark':
+            result.append("!")
+        elif tag == "I-par":
+           result.append(".\n")
+    return result
+
 
 def lstm_get_punc(text, model_name, splitted=False):
     with open("lstm_models.json") as f:
@@ -61,7 +78,10 @@ def lstm_get_punc(text, model_name, splitted=False):
     for o, t in zip(new_outputs[0], text):
         result.append((t, id2tag[o]))
 
-    return result
+    output_text = insert_punc(result)
+    new_output_text = " ".join(output_text)
+
+    return result, new_output_text
 
 
 text = "من در ایران زندگی میکنم ولی شما چطور زندگی میکنید"
