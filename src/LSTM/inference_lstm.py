@@ -32,7 +32,7 @@ configurations = config.SetModelConfig(args.model_name, models)
 def insert_punc(output):
     result = []
 
-    for (token, tag) in output[0]:
+    for (token, tag) in output:
         result.append(token)
         if tag == 'I-comma':
             result.append("،")
