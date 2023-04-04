@@ -79,7 +79,7 @@ def remove_english_chars(input_data):
   tokenized_content = []
   for idx, i  in enumerate(input_data):
     # some times the punc word and the word are stuck together so we seperate them
-    for x in language_lists.punctuations:
+    for x in language_lists.all_punctuations:
       if x in i and x != i:
         i = i.replace(x, f" {x} ")
         i = i.split()
