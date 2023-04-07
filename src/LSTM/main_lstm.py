@@ -60,8 +60,8 @@ def main(has_args, config_name=None):
     fasttext_model = fasttext.load_model('word-embeddings/cc.fa.300.bin')
     x_train, y_train = dataload_func.read_data(configurations["train_file_name"], configurations["train_data_size"], seq_size=configurations["lstm_seq_max_len"])
     x_test, y_test = dataload_func.read_data(configurations["test_file_name"], configurations["test_data_size"], seq_size=configurations["lstm_seq_max_len"])
-    x_train, y_train = x_train.to(device), y_train.to(device)
-    x_test, y_test = x_test.to(device), y_test.to(device)
+    # x_train, y_train = x_train.to(device), y_train.to(device)
+    # x_test, y_test = x_test.to(device), y_test.to(device)
 
     model = lstm_train_func.LSTM_Model(input_size=configurations['input_size'], hidden_size=configurations['lstm_hidden_size'], 
                                         num_layers=1, num_classes=len(list(unique_tags)), use_cnn=configurations['use_cnn'])
