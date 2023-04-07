@@ -48,7 +48,7 @@ def main(has_args, config_name=None):
 
     configurations = config.SetModelConfig(config_name, models)
     sys.stdout = open(configurations["log_file_path"], 'w', encoding="utf-8")
-    device = torch.device("cuda")
+    device = torch.device("cuda:0")
 
 
     unique_tags = configurations["unique_tags"]
@@ -60,7 +60,8 @@ def main(has_args, config_name=None):
     fasttext_model = fasttext.load_model('word-embeddings/cc.fa.300.bin')
     x_train, y_train = dataload_func.read_data(configurations["train_file_name"], configurations["train_data_size"], seq_size=configurations["lstm_seq_max_len"])
     x_test, y_test = dataload_func.read_data(configurations["test_file_name"], configurations["test_data_size"], seq_size=configurations["lstm_seq_max_len"])
-
+    x_train, y_train = x_train.to(device), y_train.to(device)
+    x_test, y_test = x_test.to(device), y_test.to(device)
 
     model = lstm_train_func.LSTM_Model(input_size=configurations['input_size'], hidden_size=configurations['lstm_hidden_size'], 
                                         num_layers=1, num_classes=len(list(unique_tags)), use_cnn=configurations['use_cnn'])
@@ -75,9 +76,7 @@ def main(has_args, config_name=None):
 
     #Datasets
     train_dataset = dataload_func.MyDataset(x_train, y_train, tag2id, fasttext_model)
-    train_dataset = train_dataset.to(device)
     test_dataset = dataload_func.MyDataset(x_test, y_test, tag2id, fasttext_model)
-    test_dataset = test_dataset.to(device)
     # Parameters
 
     train_params = {'batch_size': 32,
@@ -92,9 +91,7 @@ def main(has_args, config_name=None):
 
     #Dataloaders
     train_loader = DataLoader(train_dataset,  **train_params)
-    train_loader = train_loader.to(device)
     test_loader = DataLoader(test_dataset, **test_params)
-    test_loader = test_loader.to(device)
 
 
 

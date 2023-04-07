@@ -9,6 +9,9 @@ from seqeval.metrics import performance_measure
 from datasets import load_metric
 metric = load_metric("seqeval")
 
+device = torch.device("cuda:0")
+
+
 class LSTM_Model(nn.Module):
     def __init__(self, input_size, hidden_size, num_layers, num_classes, use_cnn, dropout=0.1):
         super(LSTM_Model, self).__init__()
@@ -70,9 +73,9 @@ def train_one_epoch(epoch_index, train_loader, optimizer, model, loss_function, 
     # index and do some intra-epoch reporting
     for i, data in enumerate(train_loader):
         # Every data instance is an input + label pair
-        x = data['x']
+        x = data['x'].to(device)
         x = x.permute(0, 2, 1)
-        y = data['y']
+        y = data['y'].to(device)
 
         # Zero your gradients for every batch!
         optimizer.zero_grad()
@@ -150,9 +153,9 @@ def train(epochs, model, train_loader, test_loader, optimizer, loss_function, id
         accumulated_vlabels= []
 
         for i, vdata in enumerate(test_loader):
-            vinputs = vdata['x']
+            vinputs = vdata['x'].to(device)
             vinputs = vinputs.permute(0, 2, 1)
-            vlabels = vdata['y']
+            vlabels = vdata['y'].to(device)
             voutputs = model(vinputs)
             vloss = loss_function(voutputs.view(-1, num_classes), vlabels.view(-1))
             running_vloss += vloss
