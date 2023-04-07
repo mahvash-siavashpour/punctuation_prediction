@@ -113,7 +113,7 @@ def main(has_args, config_name=None):
     weights = torch.from_numpy(weights).float()
     weights = weights.to(device)
     
-    loss_function = nn.CrossEntropyLoss(weight=torch.from_numpy(weights).float())
+    loss_function = nn.CrossEntropyLoss(weight=weights)
     loss_function = loss_function.to(device)
 
 
