@@ -95,10 +95,10 @@ def train_one_epoch(epoch_index, train_loader, optimizer, model, loss_function, 
         # Adjust learning weights
         optimizer.step()
 
-        new_y = y.detach().numpy()
+        new_y = y.cpu().numpy()
         new_y = new_y.reshape(-1).tolist()
         notated_y = [id2tag[i] for i in new_y]
-        new_outputs = outputs.detach().numpy()
+        new_outputs = outputs.cpu().numpy()
         new_outputs = np.argmax(new_outputs,axis=2)
         new_outputs = new_outputs.reshape(-1).tolist()
         notated_outputs = [id2tag[i] for i in new_outputs]
@@ -160,10 +160,10 @@ def train(epochs, model, train_loader, test_loader, optimizer, loss_function, id
             vloss = loss_function(voutputs.view(-1, num_classes), vlabels.view(-1))
             running_vloss += vloss
 
-            new_vlabels = vlabels.detach().numpy()
+            new_vlabels = vlabels.cpu().numpy()
             new_vlabels = new_vlabels.reshape(-1).tolist()
             notated_vlabels = [id2tag[i] for i in new_vlabels]
-            new_voutputs = voutputs.detach().numpy()
+            new_voutputs = voutputs.cpu().numpy()
             new_voutputs = np.argmax(new_voutputs,axis=2)
             new_voutputs = new_voutputs.reshape(-1).tolist()
             notated_voutputs = [id2tag[i] for i in new_voutputs]
