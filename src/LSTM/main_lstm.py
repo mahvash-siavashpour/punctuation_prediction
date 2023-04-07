@@ -48,7 +48,7 @@ def main(has_args, config_name=None):
 
     configurations = config.SetModelConfig(config_name, models)
     sys.stdout = open(configurations["log_file_path"], 'w', encoding="utf-8")
-
+    device = torch.device("cuda")
 
 
     unique_tags = configurations["unique_tags"]
@@ -62,9 +62,12 @@ def main(has_args, config_name=None):
     x_test, y_test = dataload_func.read_data(configurations["test_file_name"], configurations["test_data_size"], seq_size=configurations["lstm_seq_max_len"])
 
 
+    fasttext_model = fasttext_model.to(device)
 
     model = lstm_train_func.LSTM_Model(input_size=configurations['input_size'], hidden_size=configurations['lstm_hidden_size'], 
                                         num_layers=1, num_classes=len(list(unique_tags)), use_cnn=configurations['use_cnn'])
+    
+    model = model.to(device)
 
     print(model)
 
@@ -74,7 +77,9 @@ def main(has_args, config_name=None):
 
     #Datasets
     train_dataset = dataload_func.MyDataset(x_train, y_train, tag2id, fasttext_model)
+    train_dataset = train_dataset.to(device)
     test_dataset = dataload_func.MyDataset(x_test, y_test, tag2id, fasttext_model)
+    test_dataset = test_dataset.to(device)
     # Parameters
 
     train_params = {'batch_size': 32,
@@ -89,7 +94,9 @@ def main(has_args, config_name=None):
 
     #Dataloaders
     train_loader = DataLoader(train_dataset,  **train_params)
+    train_loader = train_loader.to(device)
     test_loader = DataLoader(test_dataset, **test_params)
+    test_loader = test_loader.to(device)
 
 
 
@@ -108,8 +115,10 @@ def main(has_args, config_name=None):
     # from sklearn.metrics import f1_score   
 
     optimizer = AdamW(model.parameters(), lr=configurations["LEARNING_RATE"])
+    weights = weights.to(device)
     
     loss_function = nn.CrossEntropyLoss(weight=torch.from_numpy(weights).float())
+    loss_function = loss_function.to(device)
 
 
     
