@@ -110,6 +110,7 @@ def main(has_args, config_name=None):
     # from sklearn.metrics import f1_score   
 
     optimizer = AdamW(model.parameters(), lr=configurations["LEARNING_RATE"])
+    weights = torch.from_numpy(weights).float()
     weights = weights.to(device)
     
     loss_function = nn.CrossEntropyLoss(weight=torch.from_numpy(weights).float())
