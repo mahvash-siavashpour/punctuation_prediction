@@ -73,9 +73,9 @@ def train_one_epoch(epoch_index, train_loader, optimizer, model, loss_function, 
     # index and do some intra-epoch reporting
     for i, data in enumerate(train_loader):
         # Every data instance is an input + label pair
-        x = torch.from_numpy(data['x']).float().to(device)
+        x = data['x'].to(device)
         x = x.permute(0, 2, 1)
-        y = torch.from_numpy(data['y']).float().to(device)
+        y = data['y'].to(device)
 
         # Zero your gradients for every batch!
         optimizer.zero_grad()
@@ -153,9 +153,9 @@ def train(epochs, model, train_loader, test_loader, optimizer, loss_function, id
         accumulated_vlabels= []
 
         for i, vdata in enumerate(test_loader):
-            vinputs = torch.from_numpy(vdata['x']).float().to(device)
+            vinputs = vdata['x'].to(device)
             vinputs = vinputs.permute(0, 2, 1)
-            vlabels = torch.from_numpy(vdata['y']).float().to(device)
+            vlabels = vdata['y'].to(device)
             voutputs = model(vinputs)
             vloss = loss_function(voutputs.view(-1, num_classes), vlabels.view(-1))
             running_vloss += vloss
