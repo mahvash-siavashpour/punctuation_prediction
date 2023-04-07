@@ -62,8 +62,6 @@ def main(has_args, config_name=None):
     x_test, y_test = dataload_func.read_data(configurations["test_file_name"], configurations["test_data_size"], seq_size=configurations["lstm_seq_max_len"])
 
 
-    fasttext_model = fasttext_model.to(device)
-
     model = lstm_train_func.LSTM_Model(input_size=configurations['input_size'], hidden_size=configurations['lstm_hidden_size'], 
                                         num_layers=1, num_classes=len(list(unique_tags)), use_cnn=configurations['use_cnn'])
     
