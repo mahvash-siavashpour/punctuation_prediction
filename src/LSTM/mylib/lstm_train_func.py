@@ -153,23 +153,24 @@ def train(epochs, model, train_loader, test_loader, optimizer, loss_function, id
         accumulated_vlabels= []
 
         for i, vdata in enumerate(test_loader):
-            vinputs = vdata['x'].to(device)
-            vinputs = vinputs.permute(0, 2, 1)
-            vlabels = vdata['y'].to(device)
-            voutputs = model(vinputs)
-            vloss = loss_function(voutputs.view(-1, num_classes), vlabels.view(-1))
-            running_vloss += vloss
+            with torch.no_grad():
+                vinputs = vdata['x'].to(device)
+                vinputs = vinputs.permute(0, 2, 1)
+                vlabels = vdata['y'].to(device)
+                voutputs = model(vinputs)
+                vloss = loss_function(voutputs.view(-1, num_classes), vlabels.view(-1))
+                running_vloss += vloss
 
-            new_vlabels = vlabels.cpu().detach().numpy()
-            new_vlabels = new_vlabels.reshape(-1).tolist()
-            notated_vlabels = [id2tag[i] for i in new_vlabels]
-            new_voutputs = voutputs.cpu().detach().numpy()
-            new_voutputs = np.argmax(new_voutputs,axis=2)
-            new_voutputs = new_voutputs.reshape(-1).tolist()
-            notated_voutputs = [id2tag[i] for i in new_voutputs]
+                new_vlabels = vlabels.cpu().detach().numpy()
+                new_vlabels = new_vlabels.reshape(-1).tolist()
+                notated_vlabels = [id2tag[i] for i in new_vlabels]
+                new_voutputs = voutputs.cpu().detach().numpy()
+                new_voutputs = np.argmax(new_voutputs,axis=2)
+                new_voutputs = new_voutputs.reshape(-1).tolist()
+                notated_voutputs = [id2tag[i] for i in new_voutputs]
 
-            accumulated_voutputs.append(notated_voutputs)
-            accumulated_vlabels.append(notated_vlabels)
+                accumulated_voutputs.append(notated_voutputs)
+                accumulated_vlabels.append(notated_vlabels)
 
         
         results = metric.compute(predictions=accumulated_voutputs, references=accumulated_vlabels)
