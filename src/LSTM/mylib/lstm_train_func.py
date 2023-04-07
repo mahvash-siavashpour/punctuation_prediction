@@ -152,8 +152,8 @@ def train(epochs, model, train_loader, test_loader, optimizer, loss_function, id
         accumulated_voutputs = []
         accumulated_vlabels= []
 
-        for i, vdata in enumerate(test_loader):
-            with torch.no_grad():
+        with torch.no_grad():
+            for i, vdata in enumerate(test_loader):
                 vinputs = vdata['x'].to(device)
                 vinputs = vinputs.permute(0, 2, 1)
                 vlabels = vdata['y'].to(device)
