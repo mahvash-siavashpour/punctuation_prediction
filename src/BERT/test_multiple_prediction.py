@@ -131,6 +131,7 @@ model = bert_train_func.CustomModel(num_classes=len(list(unique_tags)), loss_fct
 
 
 model.load_state_dict(torch.load(configurations["save_model_path"]))
+model = model.to(device)
 model.eval()
 
 print(model)
@@ -147,6 +148,7 @@ tokenizer = AutoTokenizer.from_pretrained(bert_model_name)
 
 st = time.time()
 
+device = torch.device("cuda:0")
 
 
 """
@@ -176,15 +178,15 @@ for pn in pred_num:
   all_valid_preds = []
   all_valid_labels = []
   for idx, batch in enumerate(testing_loader):
-      labels = batch['labels']
-      text = batch['input_ids']
+      labels = batch['labels'].to(device)
+      text = batch['input_ids'].to(device)
 
       with torch.no_grad():
           outputs = model(text)
 
       outputs=outputs['logits']
 
-      predictions = outputs.detach().cpu().numpy()
+      predictions = outputs.cpu().detach().numpy()
       # predictions = np.argmax(predictions, axis=2)
 
 
