@@ -123,7 +123,7 @@ bert_model_name = configurations["bert_model_name"]
 chunksize = configurations["chunksize"]
 loss_fct = bert_train_func.loss_fct(weights=None)
 
-
+device = torch.device("cuda:0")
 pred_num = args.list
 
 
@@ -148,7 +148,7 @@ tokenizer = AutoTokenizer.from_pretrained(bert_model_name)
 
 st = time.time()
 
-device = torch.device("cuda:0")
+
 
 
 """
