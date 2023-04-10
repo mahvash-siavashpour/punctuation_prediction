@@ -14,7 +14,7 @@ from mylib import bert_train_func
 from mylib import config, dataload_func
 import time
 
-# python3 test_multiple_prediction.py bert_2.7 2 >> ../../logs/Inference/2.txt
+# python3 test_multiple_prediction.py bert_2.7 --list 2 4 8 16 >> ../../logs/Inference/2.txt
 
 def read_data(file_name, nrows, chunksize, seq_shift):
   df = pd.read_csv(file_name,sep=',', nrows=nrows)
@@ -98,7 +98,6 @@ parser.add_argument('model_name',
 parser.add_argument('--list', type=str, nargs='+', default=[])
 
 args = parser.parse_args()
-seq_shift = args.seq_shift
 
 
 if args.list == []:
@@ -126,6 +125,11 @@ loss_fct = bert_train_func.loss_fct(weights=None)
 
 
 pred_num = args.list
+
+for pn in pred_num:
+  seq_shift =  configurations["chunksize"] // pn
+  test_size = (configurations["test_data_size"] // configurations["chunksize"])*configurations["chunksize"]
+
 
 
 model = bert_train_func.CustomModel(num_classes=len(list(unique_tags)), loss_fct=loss_fct, bert_model_name=bert_model_name, model_type=configurations["model_architecture"])
@@ -212,11 +216,6 @@ good_pred = np.array(good_pred)
 """
 Loop over prediction numbers
 """
-
-for pn in pred_num:
-  seq_shift =  configurations["chunksize"] // pn
-  test_size = (configurations["test_data_size"] // configurations["chunksize"])*configurations["chunksize"]
-
 
 
   ps, fl = combine_predictions(pn, good_label, good_pred, seq_shift)
