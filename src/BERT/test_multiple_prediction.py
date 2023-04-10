@@ -269,10 +269,13 @@ for pn in pred_num:
 
   pm = performance_measure(true_labels, true_predictions)
   print(f"Results \n{pm}\n")
-  TP = pm['TP']+pm['TN']
+  TP = pm['TP']
   TN = pm['TN']
   FP=pm['FP']
   FN=pm['FN']
+  f1 = TP/(TP+(.5*(FP+FN)))
+  print(f"f1 without TN: {f1}")
+  TP += +pm['TN']
   f1 = TP/(TP+(.5*(FP+FN)))
   f1_O = TN/(TN+(.5*(FP+FN)))
   print(f1)
