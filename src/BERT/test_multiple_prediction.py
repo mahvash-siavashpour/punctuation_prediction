@@ -23,7 +23,7 @@ def read_data(file_name, nrows, chunksize, seq_shift):
   input_tokens = []
   input_labels = []
   i = 0
-  print(len(tags))
+  # print(len(tags))
   while i+chunksize <= len(tags):
 
     input_tokens.append(list(text[i:i+chunksize]))
@@ -61,9 +61,11 @@ def combine_predictions(pred_num, good_label, good_pred, seq_shift):
           # print(p[0].shape)
           # if p[0].shape[0] == 0:
           #   print(p)
+          try:
 
-          # print(p)
-          ps.append(np.log(np.exp(p).mean(0)))
+            ps.append(np.log(np.exp(p).mean(0)))
+          except:
+             print(p)
     
     for i in range(good_pred.shape[0], good_pred.shape[0]+pred_num):
         start_idx = max(0, i-pred_num+1)
@@ -86,7 +88,7 @@ def combine_predictions(pred_num, good_label, good_pred, seq_shift):
 
     # ps = np.array(ps)
     ps = np.concatenate(ps)
-    print("** Len final_labels:")
+    print("** Len final_labels: ")
     print(len(final_labels))
     final_labels = np.concatenate(final_labels)
     
