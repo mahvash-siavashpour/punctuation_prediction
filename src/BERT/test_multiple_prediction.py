@@ -192,7 +192,7 @@ for pn in pred_num:
 
 
       all_valid_preds.append(predictions)
-      all_valid_labels.append(np.array(labels))
+      all_valid_labels.append(np.array(labels.cpu().detach().numpy()))
 
   all_valid_preds = np.concatenate(all_valid_preds)
   print(all_valid_preds.shape)
