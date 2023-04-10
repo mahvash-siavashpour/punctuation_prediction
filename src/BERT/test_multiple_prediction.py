@@ -65,6 +65,8 @@ def combine_predictions(pred_num, good_label, good_pred, seq_shift):
 
             ps.append(np.log(np.exp(p).mean(0)))
           except:
+             print()
+             print(i)
              print(p.shape)
     
     for i in range(good_pred.shape[0], good_pred.shape[0]+pred_num):
