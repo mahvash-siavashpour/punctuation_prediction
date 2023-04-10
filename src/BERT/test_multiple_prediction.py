@@ -154,6 +154,8 @@ Loop over prediction numbers
 """
 
 for pn in pred_num:
+
+  pn = int(pn)
   seq_shift =  configurations["chunksize"] // pn
   test_size = (configurations["test_data_size"] // configurations["chunksize"])*configurations["chunksize"]
 
