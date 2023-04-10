@@ -65,7 +65,7 @@ def combine_predictions(pred_num, good_label, good_pred, seq_shift):
 
             ps.append(np.log(np.exp(p).mean(0)))
           except:
-             print(p)
+             print(p.shape)
     
     for i in range(good_pred.shape[0], good_pred.shape[0]+pred_num):
         start_idx = max(0, i-pred_num+1)
