@@ -156,6 +156,7 @@ Loop over prediction numbers
 """
 
 for pn in pred_num:
+  print(f"Testing for {pn} number of predictions")
 
   pn = int(pn)
   seq_shift =  configurations["chunksize"] // pn
