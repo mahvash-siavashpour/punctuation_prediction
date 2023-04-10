@@ -45,7 +45,7 @@ def combine_predictions(pred_num, good_label, good_pred, seq_shift):
         start_idx = max(0, i-pred_num+1)
         end_idx = min(good_pred.shape[0], i+1)
         # print(f"**{start_idx, end_idx}")
-        p = []
+        p = np.array()
         flag = False
         for j, k in enumerate(range(start_idx, end_idx)):
             j = end_idx - start_idx - j - 1
@@ -75,7 +75,7 @@ def combine_predictions(pred_num, good_label, good_pred, seq_shift):
         if start_idx == end_idx:
           break
         # print(f"**{start_idx, end_idx}")
-        p = []
+        p = np.array()
         flag = False
         for j, k in enumerate(range(start_idx, end_idx)):
             j = pred_num-1 - j
