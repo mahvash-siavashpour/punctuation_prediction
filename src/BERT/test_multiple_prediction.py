@@ -126,11 +126,6 @@ loss_fct = bert_train_func.loss_fct(weights=None)
 
 pred_num = args.list
 
-for pn in pred_num:
-  seq_shift =  configurations["chunksize"] // pn
-  test_size = (configurations["test_data_size"] // configurations["chunksize"])*configurations["chunksize"]
-
-
 
 model = bert_train_func.CustomModel(num_classes=len(list(unique_tags)), loss_fct=loss_fct, bert_model_name=bert_model_name, model_type=configurations["model_architecture"])
 
@@ -141,17 +136,6 @@ model.eval()
 print(model)
 
 tokenizer = AutoTokenizer.from_pretrained(bert_model_name)
-
-test_tokens, test_tags = read_data(configurations["test_file_name"], test_size, chunksize=configurations["chunksize"], seq_shift=seq_shift)
-testing_set = dataload_func.MyDataset(text=test_tokens, tags=test_tags, tokenizer=tokenizer, tag2id=tag2id, max_len=configurations["bert_seq_max_len"])
-
-test_params = {'batch_size': 64,
-                'shuffle': False,
-                'num_workers': 2
-                }
-
-testing_loader = torch.utils.data.DataLoader(testing_set, **test_params)
-
 
 
 
@@ -165,57 +149,75 @@ st = time.time()
 
 
 
-
-all_valid_preds = []
-all_valid_labels = []
-for idx, batch in enumerate(testing_loader):
-    labels = batch['labels']
-    text = batch['input_ids']
-
-    with torch.no_grad():
-        outputs = model(text)
-
-    outputs=outputs['logits']
-
-    predictions = outputs.detach().cpu().numpy()
-    # predictions = np.argmax(predictions, axis=2)
-
-
-    all_valid_preds.append(predictions)
-    all_valid_labels.append(np.array(labels))
-
-all_valid_preds = np.concatenate(all_valid_preds)
-print(all_valid_preds.shape)
-
-all_valid_labels = np.concatenate(all_valid_labels)
-print(all_valid_labels.shape)
-
-
-
-# Remove ignored index (special tokens)
-
-good_pred = []
-good_label = []
-for prediction, label in zip(all_valid_preds, all_valid_labels):
-    tmp_pred = []
-    tmp_label = []
-
-    for (p, l) in zip(prediction, label):
-      if l != -100:
-        tmp_pred.append(p)
-        tmp_label.append(l)
-
-    good_pred.append(np.array(tmp_pred))
-    good_label.append(np.array(tmp_label))
-
-
-good_label = np.array(good_label)
-good_pred = np.array(good_pred)
-
-
 """
 Loop over prediction numbers
 """
+
+for pn in pred_num:
+  seq_shift =  configurations["chunksize"] // pn
+  test_size = (configurations["test_data_size"] // configurations["chunksize"])*configurations["chunksize"]
+
+
+  test_tokens, test_tags = read_data(configurations["test_file_name"], test_size, chunksize=configurations["chunksize"], seq_shift=seq_shift)
+  testing_set = dataload_func.MyDataset(text=test_tokens, tags=test_tags, tokenizer=tokenizer, tag2id=tag2id, max_len=configurations["bert_seq_max_len"])
+
+  test_params = {'batch_size': 64,
+                  'shuffle': False,
+                  'num_workers': 2
+                  }
+
+  testing_loader = torch.utils.data.DataLoader(testing_set, **test_params)
+
+  
+
+
+  all_valid_preds = []
+  all_valid_labels = []
+  for idx, batch in enumerate(testing_loader):
+      labels = batch['labels']
+      text = batch['input_ids']
+
+      with torch.no_grad():
+          outputs = model(text)
+
+      outputs=outputs['logits']
+
+      predictions = outputs.detach().cpu().numpy()
+      # predictions = np.argmax(predictions, axis=2)
+
+
+      all_valid_preds.append(predictions)
+      all_valid_labels.append(np.array(labels))
+
+  all_valid_preds = np.concatenate(all_valid_preds)
+  print(all_valid_preds.shape)
+
+  all_valid_labels = np.concatenate(all_valid_labels)
+  print(all_valid_labels.shape)
+
+
+
+  # Remove ignored index (special tokens)
+
+  good_pred = []
+  good_label = []
+  for prediction, label in zip(all_valid_preds, all_valid_labels):
+      tmp_pred = []
+      tmp_label = []
+
+      for (p, l) in zip(prediction, label):
+        if l != -100:
+          tmp_pred.append(p)
+          tmp_label.append(l)
+
+      good_pred.append(np.array(tmp_pred))
+      good_label.append(np.array(tmp_label))
+
+
+  good_label = np.array(good_label)
+  good_pred = np.array(good_pred)
+
+
 
 
   ps, fl = combine_predictions(pn, good_label, good_pred, seq_shift)
