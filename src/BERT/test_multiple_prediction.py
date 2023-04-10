@@ -44,25 +44,25 @@ def combine_predictions(pred_num, good_label, good_pred, seq_shift):
 
         start_idx = max(0, i-pred_num+1)
         end_idx = min(good_pred.shape[0], i+1)
-        print(f"**{start_idx, end_idx}")
+        # print(f"**{start_idx, end_idx}")
         p = []
         flag = False
         for j, k in enumerate(range(start_idx, end_idx)):
             j = end_idx - start_idx - j - 1
 
-            print(k, j)
+            # print(k, j)
             p.append(good_pred[k][j*seq_shift:(j+1)*seq_shift])
             if not flag:
               final_labels.append(good_label[k][j*seq_shift:(j+1)*seq_shift])
               flag = True
 
         if p is not []:
-          print(len(p))
-          print(p[0].shape)
-          if p[0].shape[0] == 0:
-            print(p)
+          # print(len(p))
+          # print(p[0].shape)
+          # if p[0].shape[0] == 0:
+          #   print(p)
 
-          print(p)
+          # print(p)
           ps.append(np.log(np.exp(p).mean(0)))
     
     for i in range(good_pred.shape[0], good_pred.shape[0]+pred_num):
@@ -70,12 +70,12 @@ def combine_predictions(pred_num, good_label, good_pred, seq_shift):
         end_idx = min(good_pred.shape[0], i+1)
         if start_idx == end_idx:
           break
-        print(f"**{start_idx, end_idx}")
+        # print(f"**{start_idx, end_idx}")
         p = []
         flag = False
         for j, k in enumerate(range(start_idx, end_idx)):
             j = pred_num-1 - j
-            print(k, j)
+            # print(k, j)
             p.append(good_pred[k][j*seq_shift:(j+1)*seq_shift])
             if not flag:
               final_labels.append(good_label[k][j*seq_shift:(j+1)*seq_shift])
@@ -86,7 +86,7 @@ def combine_predictions(pred_num, good_label, good_pred, seq_shift):
 
     # ps = np.array(ps)
     ps = np.concatenate(ps)
-    print("**")
+    print("** Len final_labels:")
     print(len(final_labels))
     final_labels = np.concatenate(final_labels)
     
@@ -197,10 +197,10 @@ for pn in pred_num:
       all_valid_labels.append(labels.cpu().detach().numpy())
 
   all_valid_preds = np.concatenate(all_valid_preds)
-  print(all_valid_preds.shape)
+  print(f"all_valid_preds.shape: {all_valid_preds.shape}")
 
   all_valid_labels = np.concatenate(all_valid_labels)
-  print(all_valid_labels.shape)
+  print(f"all_valid_labels.shape: {all_valid_labels.shape}")
 
 
 
@@ -230,7 +230,7 @@ for pn in pred_num:
   ps, fl = combine_predictions(pn, good_label, good_pred, seq_shift)
 
   final_predictions = np.argmax(ps, axis=1)
-  print(final_predictions.shape)
+  print(f"final_predictions.shape: {final_predictions.shape}")
 
 
   true_predictions = []
@@ -266,7 +266,7 @@ for pn in pred_num:
 
 
   pm = performance_measure(true_labels, true_predictions)
-  print(f"\n{pm}\n")
+  print(f"Results \n{pm}\n")
   TP = pm['TP']+pm['TN']
   TN = pm['TN']
   FP=pm['FP']
