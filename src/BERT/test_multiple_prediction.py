@@ -61,6 +61,8 @@ def combine_predictions(pred_num, good_label, good_pred, seq_shift):
           print(p[0].shape)
           if p[0].shape[0] == 0:
             print(p)
+
+          print(p)
           ps.append(np.log(np.exp(p).mean(0)))
     
     for i in range(good_pred.shape[0], good_pred.shape[0]+pred_num):
@@ -192,7 +194,7 @@ for pn in pred_num:
 
 
       all_valid_preds.append(predictions)
-      all_valid_labels.append(np.array(labels.cpu().detach().numpy()))
+      all_valid_labels.append(labels.cpu().detach().numpy())
 
   all_valid_preds = np.concatenate(all_valid_preds)
   print(all_valid_preds.shape)
