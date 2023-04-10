@@ -270,7 +270,7 @@ for pn in pred_num:
   print(results)
 
 
-  pm = performance_measure(true_labels, true_predictions)
+  pm = performance_measure(final_true_labels, final_true_predictions)
   print(f"Results \n{pm}\n")
   TP = pm['TP']
   TN = pm['TN']
