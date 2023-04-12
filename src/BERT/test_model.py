@@ -140,6 +140,6 @@ for prediction, label in zip(all_valid_preds, all_valid_labels):
 from sklearn.metrics import confusion_matrix
 
 
-all_uni_labels = list(unique_tags)
+all_uni_labels = ['I-dot','I-comma',  'I-qMark','I-exMark', 'O']
 print(all_uni_labels)
 print(confusion_matrix(true_labels, true_predictions, labels=all_uni_labels))
