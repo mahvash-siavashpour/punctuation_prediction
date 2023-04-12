@@ -138,4 +138,8 @@ for prediction, label in zip(all_valid_preds, all_valid_labels):
             true_labels.append(id2tag[l])
 
 from sklearn.metrics import confusion_matrix
-print(confusion_matrix(true_labels, true_predictions, labels=list(unique_tags)))
+
+
+all_uni_labels = list(unique_tags)
+print(all_uni_labels)
+print(confusion_matrix(true_labels, true_predictions, labels=all_uni_labels))
