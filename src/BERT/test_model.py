@@ -127,11 +127,15 @@ print(f"O f1: {f1_O}")
 from seqeval.metrics import classification_report
 print(classification_report(true_labels, true_predictions))
 
-true_labels = np.array(true_labels)
-true_labels = true_labels.reshape(true_labels.shape[0]*true_labels.shape[1])
 
-true_predictions = np.array(true_predictions)
-true_predictions = true_predictions.reshape(true_predictions.shape[0]*true_predictions.shape[1])
+
+true_predictions = []
+true_labels = []
+for prediction, label in zip(all_valid_preds, all_valid_labels):
+    for (p, l) in zip(prediction, label):
+        if l != -100:
+            true_predictions.append(id2tag[p])
+            true_labels.append(id2tag[l])
 
 from sklearn.metrics import confusion_matrix
 print(confusion_matrix(true_labels, true_predictions))
