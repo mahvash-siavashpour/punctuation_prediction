@@ -129,4 +129,4 @@ print(classification_report(true_labels, true_predictions))
 
 
 from sklearn.metrics import confusion_matrix
-print(confusion_matrix(true_labels, true_predictions, labels=unique_tags))
+print(confusion_matrix(true_labels, true_predictions))
