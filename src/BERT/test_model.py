@@ -47,6 +47,7 @@ model = bert_train_func.CustomModel(num_classes=len(list(unique_tags)), loss_fct
 
 model.load_state_dict(torch.load(configurations["save_model_path"]))
 model.eval()
+model = model.to(device)
 
 print(model)
 
