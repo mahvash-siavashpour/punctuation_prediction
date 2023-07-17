@@ -84,14 +84,18 @@ def main(has_args, config_name=None):
     train_tokens, train_tags = dataload_func.read_data(configurations["train_file_name"], configurations["train_data_size"], chunksize=configurations["chunksize"])
     test_tokens, test_tags = dataload_func.read_data(configurations["test_file_name"], configurations["test_data_size"], chunksize=configurations["chunksize"])
 
-    # Commented out IPython magic to ensure Python compatibility.
     training_set = dataload_func.MyDataset(text=train_tokens, tags=train_tags, tokenizer=tokenizer, tag2id=tag2id, max_len=configurations["bert_seq_max_len"])
     testing_set = dataload_func.MyDataset(text=test_tokens, tags=test_tags, tokenizer=tokenizer, tag2id=tag2id, max_len=configurations["bert_seq_max_len"])
     # %time
 
     print(f"length of the sequence: {len(training_set[0]['labels'])}")
 
-    # Parameters
+
+
+    ''' Parameters for counting ONLY
+        Not used in actual training and testing
+    '''
+
 
     train_params = {'batch_size': 32,
                     'shuffle': False,
@@ -106,7 +110,7 @@ def main(has_args, config_name=None):
     training_loader = torch.utils.data.DataLoader(training_set, **train_params)
     testing_loader = torch.utils.data.DataLoader(testing_set, **test_params)
 
-    # """## Loss Scheme"""
+
     train_label_count, total_labels = dataload_func.label_counts(id2tag, training_loader)
     print(f"number of each labels: \n {train_label_count}")
 

@@ -79,6 +79,10 @@ def main(has_args, config_name=None):
     test_dataset = dataload_func.MyDataset(x_test, y_test, tag2id, fasttext_model)
     # Parameters
 
+    ''' Parameters for counting ONLY
+        Not used in actual training and testing
+    '''
+
     train_params = {'batch_size': 32,
                     'shuffle': False,
                     'num_workers': 0
